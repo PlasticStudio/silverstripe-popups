@@ -1,6 +1,6 @@
 {
-    "name": "silverstripe-module/skeleton",
-    "description": "A skeleton for Silverstripe CMS modules.",
+    "name": "plasticstudio/silverstripe-popups",
+    "description": "A simple popup module for SilverStripe CMS",
     "type": "silverstripe-vendormodule",
     "keywords": [
         "silverstripe",
@@ -8,7 +8,7 @@
     ],
     "license": "BSD-3-Clause",
     "require": {
-        "silverstripe/framework": "^6.0",
+        "silverstripe/framework": "^5.0 || ^6.0",
         "silverstripe/admin": "^3.0"
     },
     "require-dev": {
