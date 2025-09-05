@@ -1,0 +1,3 @@
+SilverStripe\LinkField\Models\Link:
+  extensions:
+    - PlasticStudio\SilverstripePopups\Extensions\LinkExtension

@@ -15,6 +15,7 @@ use SilverStripe\Forms\DatetimeField;
 use SilverStripe\Forms\DropdownField;
 use SilverStripe\Forms\TextareaField;
 use SilverStripe\Versioned\Versioned;
+use SilverStripe\LinkField\Models\Link;
 use SilverStripe\ORM\FieldType\DBDatetime;
 use SilverStripe\AssetAdmin\Forms\UploadField;
 use SilverStripe\LinkField\Form\MultiLinkField;
@@ -58,7 +59,7 @@ class Popup extends DataObject
     ];
 
     private static $has_many = [
-        'Links' => PopupLink::class
+        'Links' => Link::class
     ];
 
     private static $many_many = [
@@ -133,21 +134,15 @@ class Popup extends DataObject
            $filteredPageTypes[] = $pageType;
         }
 
-        // unset($pageTypeNames['Page']);
-        // unset($pageTypeNames['SilverStripe\CMS\Model\Page']);
-        // unset($pageTypeNames['SilverStripe\CMS\Model\SiteTree']);
-
         $pageTypesField = ListboxField::create(
             'PageTypes',
             'Show on these page types',
             $filteredPageTypes
-            // $pageTypes
         );
 
         $pageTypesField->displayIf('AllPages')->isNotChecked()->andIf('LinkBy')->isEqualTo('pageType')->end();
         
         $fields->addFieldsToTab('Root.DisplaySettings', [
-
             CheckboxField::create(
                 'AllPages',
                 'All Pages'
@@ -175,6 +170,7 @@ class Popup extends DataObject
         ]);
 
         $fields->addFieldsToTab('Root.Schedule', [
+            // TODO: should we replace with embargo/expiry module?
             DatetimeField::create('ActiveStart', 'Active Start')
                 ->setDescription('The date and time when the popup should start being shown. Leave blank to start immediately.'),
             DatetimeField::create('ActiveEnd', 'Active End')
