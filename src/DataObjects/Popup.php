@@ -2,22 +2,22 @@
 
 namespace PlasticStudio\SilverstripePopups\DataObjects;
 
-use SilverStripe\Assets\File;
 use SilverStripe\Assets\Image;
+use SilverStripe\CMS\Model\Page;
 use SilverStripe\Core\ClassInfo;
 use SilverStripe\ORM\DataObject;
 use SilverStripe\Forms\TextField;
 use SilverStripe\CMS\Model\SiteTree;
 use SilverStripe\Forms\ListboxField;
+use SilverStripe\Forms\LiteralField;
 use SilverStripe\Forms\CheckboxField;
+use SilverStripe\Forms\DatetimeField;
 use SilverStripe\Forms\DropdownField;
 use SilverStripe\Forms\TextareaField;
 use SilverStripe\Versioned\Versioned;
-use SilverStripe\LinkField\Form\MultiLinkField;
-use SilverStripe\LinkField\Models\Link;
 use SilverStripe\ORM\FieldType\DBDatetime;
-use SilverShop\HasOneField\HasOneButtonField;
 use SilverStripe\AssetAdmin\Forms\UploadField;
+use SilverStripe\LinkField\Form\MultiLinkField;
 
 class Popup extends DataObject
 {
@@ -28,19 +28,22 @@ class Popup extends DataObject
     ];
 
     private static $db = [
-        'Enabled' => 'Boolean',
-
         'Title' => 'Varchar',
         'Content' => 'Varchar',
+
+        'ExtraPopupClasses' => 'Varchar(255)',
+        'ExtraMinimizeClasses' => 'Varchar(255)',
+        'ExtraCloseClasses' => 'Varchar(255)',
+
+        'AlwaysShow' => 'Boolean',
+        'ActiveStart' => 'DBDatetime',
+        'ActiveEnd' => 'DBDatetime',
 
         'CollapseOnMobile' => 'Boolean',
 
         'AllPages' => 'Boolean',
+        'LinkBy' => "Enum('page, pageType', 'page')",
 
-        'ActiveStart' => 'Datetime',
-        'ActiveEnd' => 'Datetime',
-
-        'GAReference' => 'Varchar',
         'PopupSortOrder' => 'Int',
     ];
 
@@ -55,7 +58,7 @@ class Popup extends DataObject
     ];
 
     private static $has_many = [
-        'Links' => Link::class,
+        'Links' => PopupLink::class
     ];
 
     private static $many_many = [
@@ -71,7 +74,6 @@ class Popup extends DataObject
         'Enabled.Nice' => 'Enabled',
         'Image.CMSThumbnail' => 'Image',
         'Trigger' => 'Trigger',
-        'GAReference' => 'GA Reference',
     ];
 
     private static $default_sort = 'PopupSortOrder';
@@ -81,19 +83,25 @@ class Popup extends DataObject
         $fields = parent::getCMSFields();
 
         $fields->removeByName([
+            'Main',
+            'Links',
+            'Pages',
             'PopupSortOrder',
         ]);
 
-        
-        $fields->addFieldsToTab('Root.Main', [
-            DropdownField::create(
-                'Enabled',
-                'Popup Enabled',
-                [
-                    true => 'Enabled',
-                    false => 'Disabled',
-                ]
-            )->setDescription('Manually enable or disable this popup.'),
+        $fields->addFieldsToTab('Root.Content', [
+            TextField::create('Title', 'Title'),
+            TextareaField::create('Content', 'Content'),
+            UploadField::create('Image', 'Image')
+                ->setFolderName('PopupImages')->setAllowedFileCategories('image'),
+                MultiLinkField::create(
+                    'Links',
+                    'Links',
+                    null,
+                    null,
+                    false,
+                    'getCMSFields_forPopup'
+                )->setDescription('Add one or more buttons/links to the popup.'),
         ]);
 
         // Manage associated pages
@@ -107,28 +115,38 @@ class Popup extends DataObject
 
         // Manage associated page types
         $pageTypes = ClassInfo::subclassesFor(SiteTree::class);
-        $pageTypeNames = [];
+        $filteredPageTypes = [];
+
+        $exclusions = [
+            'SiteTree',
+            'Page',
+            'ErrorPage',
+            'RedirectorPage',
+            'HTMLSitemap'
+        ];
+ 
         foreach ($pageTypes as $pageType) {
             $shortName = ClassInfo::shortName($pageType);
-            $pageTypeNames[$pageType] = $shortName;
+            if (in_array($shortName, $exclusions) || in_array($pageType, $exclusions)) {
+                continue;
+            }
+           $filteredPageTypes[] = $pageType;
         }
-        unset($pageTypeNames[SiteTree::class]);
+
+        // unset($pageTypeNames['Page']);
+        // unset($pageTypeNames['SilverStripe\CMS\Model\Page']);
+        // unset($pageTypeNames['SilverStripe\CMS\Model\SiteTree']);
+
         $pageTypesField = ListboxField::create(
             'PageTypes',
             'Show on these page types',
-            // $pageTypeNames
-            $pageTypes
+            $filteredPageTypes
+            // $pageTypes
         );
+
         $pageTypesField->displayIf('AllPages')->isNotChecked()->andIf('LinkBy')->isEqualTo('pageType')->end();
         
-        $fields->addFieldsToTab('Root.Settings', [
-            UploadField::create('PopupBackdropImage', 'Backdrop Image')->setDescription('This will be applied to the popup\'s backdrop')
-                ->setFolderName('PopupBackdropImages')->setAllowedFileCategories('image')
-                ->displayIf('EnableBackdrop')->isChecked()->andIf('BackdropMode')->isEqualTo('image')->end(), // TODO: fix the conditional
-
-            UploadField::create('PopupBackdropVideo', 'Backdrop Video')->setDescription('This will be applied to the popup\'s backdrop')
-                ->setFolderName('PopupBackdropVideos')->setAllowedFileCategories('video')
-                ->displayIf('EnableBackdrop')->isChecked()->andIf('BackdropMode')->isEqualTo('video')->end(), // TODO: fix the conditional
+        $fields->addFieldsToTab('Root.DisplaySettings', [
 
             CheckboxField::create(
                 'AllPages',
@@ -149,7 +167,30 @@ class Popup extends DataObject
                 'Minimized title'
             )->displayIf('EnableMinimize')->isChecked()->end(), // TODO: fix the conditional
 
+            CheckboxField::create(
+                'CollapseOnMobile',
+                'Collapse on mobile'
+            )->setDescription('If the popup is too large for a mobile screen, it will be shown as minimized. The user can then tap to expand it.'),
+
         ]);
+
+        $fields->addFieldsToTab('Root.Schedule', [
+            DatetimeField::create('ActiveStart', 'Active Start')
+                ->setDescription('The date and time when the popup should start being shown. Leave blank to start immediately.'),
+            DatetimeField::create('ActiveEnd', 'Active End')
+                ->setDescription('The date and time when the popup should stop being shown. Leave blank to show indefinitely.'),
+        ]);
+
+        $fields->addFieldsToTab('Root.CustomClasses', [
+            LiteralField::create('html', "<p class='message notice'>Add extra classes for tracking or styling purposes.</p>"),
+            TextField::create('ExtraPopupClasses', 'Extra CSS Classes')
+                ->setDescription('Add any additional CSS classes to the popup wrapper.'),
+            TextField::create('ExtraMinimizeClasses', 'Extra Minimize Button Classes')
+                ->setDescription('Add any additional CSS classes to the minimize button.'),
+            TextField::create('ExtraCloseClasses', 'Extra Close Button Classes')
+                ->setDescription('Add any additional CSS classes to the close button.')
+        ]);
+
 
         return $fields;
     }
