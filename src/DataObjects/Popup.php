@@ -13,14 +13,15 @@ use SilverStripe\Forms\CheckboxField;
 use SilverStripe\Forms\DropdownField;
 use SilverStripe\Forms\TextareaField;
 use SilverStripe\Versioned\Versioned;
+use SilverStripe\LinkField\Form\MultiLinkField;
+use SilverStripe\LinkField\Models\Link;
 use SilverStripe\ORM\FieldType\DBDatetime;
 use SilverShop\HasOneField\HasOneButtonField;
 use SilverStripe\AssetAdmin\Forms\UploadField;
 
-
 class Popup extends DataObject
 {
-    private static string $table_name = 'WTKPopup';
+    private static string $table_name = 'Popup';
 
     private static $extensions = [
         Versioned::class,
@@ -28,43 +29,49 @@ class Popup extends DataObject
 
     private static $db = [
         'Enabled' => 'Boolean',
+
+        'Title' => 'Varchar',
+        'Content' => 'Varchar',
+
         'CollapseOnMobile' => 'Boolean',
 
         'AllPages' => 'Boolean',
-        'LinkBy' => 'Enum("page, pageType", "page")',
 
         'ActiveStart' => 'Datetime',
         'ActiveEnd' => 'Datetime',
-        
+
+        'GAReference' => 'Varchar',
         'PopupSortOrder' => 'Int',
     ];
 
-    // Define the default values
     private static $defaults = [
-        'Enabled' => true,
+        'Enabled' => false,
         'AllPages' => true,
-        'LinkBy' => 'page',
+        'CollapseOnMobile' => false,
     ];
     
     private static $has_one = [
-        'PopupBackdropImage' => Image::class,
-        'PopupBackdropVideo' => File::class,
+        'Image' => Image::class,
     ];
 
-    private static $owns = [
-        'PopupBackdropImage',
-        'PopupBackdropVideo',
+    private static $has_many = [
+        'Links' => Link::class,
     ];
 
     private static $many_many = [
         'Pages' => SiteTree::class,
     ];
 
+    private static $owns = [
+        'Image',
+        'Links',
+    ];
+
     private static $summary_fields = [
         'Enabled.Nice' => 'Enabled',
-        'Title' => 'Title',
-        'AllPages.Nice' => 'All Pages',
+        'Image.CMSThumbnail' => 'Image',
         'Trigger' => 'Trigger',
+        'GAReference' => 'GA Reference',
     ];
 
     private static $default_sort = 'PopupSortOrder';
@@ -74,35 +81,7 @@ class Popup extends DataObject
         $fields = parent::getCMSFields();
 
         $fields->removeByName([
-            'Enabled' ,
-            'AllPages',
-            'LinkBy',
-            'Trigger',
-            'TimeTrigger',
-            'ScrollTrigger',
-            'ScrollDurationTrigger',
-            'PageTypes',
-            
-            'Width',
-            'MaxWidth',
-            'OuterPadding',
-            'ShowAgainAfter',
-            'EnableMinimize',
-            'MinimizedTitle',
-            'Position',
-            
-            'PositionCustom',
-            'ActiveStart',
-            'ActiveEnd',
-            'CustomCSS',
-            'CustomClasses',
             'PopupSortOrder',
-            'Pages',
-            'LinkID',
-
-            'PopupBackdropColourID',
-            'PopupBackdropImage',
-            'PopupBackdropVideo',
         ]);
 
         

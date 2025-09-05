@@ -10,4 +10,8 @@ Add the module to your project using Composer:
 composer require plasticstudio/silverstripe-popups
 ```
 
-Add the template 
+Add the template to your `Page.ss` file:
+
+```html
+<% include PopupProvider %>
+```
