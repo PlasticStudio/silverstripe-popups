@@ -1,0 +1,260 @@
+.wtk-popups {
+}
+
+.wtk-popup {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 1;
+  transition: opacity 0.2s ease-in-out;
+  pointer-events: none;
+}
+
+.wtk-popup--hidden {
+  opacity: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+.wtk-popup__content {
+  position: absolute;
+  pointer-events: auto;
+
+  height: auto;
+  max-height: 90%;
+  z-index: 1000;
+
+  display: flex;
+  flex-direction: row;
+
+  // Default center position
+  &--center-center {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  // Modifier for top-left position
+  &--top-left {
+    top: 0;
+    left: 0;
+    transform: translate(0, 0);
+  }
+
+  // Modifier for top-center position
+  &--top-center {
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, 0);
+  }
+
+  // Modifier for top-right position
+  &--top-right {
+    top: 0;
+    right: 0;
+    left: auto;
+    transform: translate(0, 0);
+  }
+
+  // Modifier for center-left position
+  &--center-left {
+    top: 50%;
+    left: 0;
+    transform: translate(0, -50%);
+  }
+
+  // Modifier for center (default, but can be explicitly stated for clarity)
+  &--center {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  // Modifier for center-right position
+  &--center-right {
+    top: 50%;
+    right: 0;
+    left: auto;
+    transform: translate(0, -50%);
+  }
+
+  // Modifier for bottom-left position
+  &--bottom-left {
+    bottom: 0;
+    left: 0;
+    top: auto;
+    transform: translate(0, 0);
+  }
+
+  // Modifier for bottom-center position
+  &--bottom-center {
+    bottom: 0;
+    left: 50%;
+    top: auto;
+    transform: translate(-50%, 0);
+  }
+
+  // Modifier for bottom-right position
+  &--bottom-right {
+    bottom: 0;
+    right: 0;
+    left: auto;
+    top: auto;
+    transform: translate(0, 0);
+  }
+}
+
+.wtk-popup__full {
+  .wtk-popup__close,
+  .wtk-popup__minimize {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    z-index: 5;
+    cursor: pointer;
+    padding: 15px;
+
+    &::before,
+    &::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 2px;
+      height: 15px;
+      background-color: rgb(55, 55, 55);
+    }
+
+    &::before {
+      transform: translate(-50%, -50%) rotate(45deg);
+    }
+
+    &::after {
+      transform: translate(-50%, -50%) rotate(-45deg);
+    }
+  }
+
+  .wtk-popup__inner {
+    background-color: var(--popup-content-background-colour);
+    padding: var(--popup-padding);
+    padding: var(--popup-margin);
+    border-radius: var(--popup-border-radius);
+    position: relative;
+  }
+}
+
+.wtk-popup__minimized:not(.wtk-popup--hidden).wtk-popup__minimized--right {
+  margin-left: calc(100% - 40px);
+}
+
+.wtk-popup__minimized {
+  width: auto;
+  height: auto;
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  padding: 15px 5px;
+  display: flex;
+  flex-direction: row;
+  gap: 15px;
+  align-items: center;
+  justify-content: flex-start;
+  transition: transform 0.75s ease-in-out;
+  cursor: pointer;
+
+  .wtk-popup__close {
+    width: 30px;
+    height: 30px;
+    position: relative;
+    cursor: pointer;
+
+    &::before,
+    &::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      display: block;
+      width: 2px;
+      height: 25px;
+      background-color: rgb(55, 55, 55);
+    }
+
+    &::before {
+      transform: translate(-50%, -50%) rotate(45deg);
+    }
+
+    &::after {
+      transform: translate(-50%, -50%) rotate(-45deg);
+    }
+  }
+}
+
+.wtk-popup-backdrop {
+  position: fixed; // Ensure it covers the entire viewport
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 999; // Place it behind the popup content
+  background-color: rgba(0, 0, 0, 0.5); // Example semi-transparent black
+  opacity: 0; // Initially hidden
+  transition: opacity 0.2s ease-in-out; // Optional transition
+
+  pointer-events: none;
+
+  .wtk-popup:not(.wtk-popup--minimized-state) & {
+    pointer-events: auto;
+    opacity: 1;
+  }
+}
+
+// Image Mode
+
+.wtk-popup-backdrop-image__inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.wtk-popup-backdrop-image__picture {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+.wtk-popup-backdrop-image__picture-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+// Video Mode
+
+.wtk-popup-backdrop-video__inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.wtk-popup-backdrop-video__video-player {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  object-fit: cover;
+}
+
+.wtk-popup-backdrop-video__video {
+}

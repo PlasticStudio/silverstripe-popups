@@ -1,1 +1,225 @@
-.example-component{display:block}
+/*!**************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[0].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[0].use[2]!./node_modules/resolve-url-loader/index.js??ruleSet[1].rules[0].use[3]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[0].use[4]!./client/src/scss/index.scss ***!
+  \**************************************************************************************************************************************************************************************************************************************************************************************************************************/
+.wtk-popup {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 1;
+  transition: opacity 0.2s ease-in-out;
+  pointer-events: none;
+}
+
+.wtk-popup--hidden {
+  opacity: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+.wtk-popup__content {
+  position: absolute;
+  pointer-events: auto;
+  height: auto;
+  max-height: 90%;
+  z-index: 1000;
+  display: flex;
+  flex-direction: row;
+}
+.wtk-popup__content--center-center {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.wtk-popup__content--top-left {
+  top: 0;
+  left: 0;
+  transform: translate(0, 0);
+}
+.wtk-popup__content--top-center {
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, 0);
+}
+.wtk-popup__content--top-right {
+  top: 0;
+  right: 0;
+  left: auto;
+  transform: translate(0, 0);
+}
+.wtk-popup__content--center-left {
+  top: 50%;
+  left: 0;
+  transform: translate(0, -50%);
+}
+.wtk-popup__content--center {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.wtk-popup__content--center-right {
+  top: 50%;
+  right: 0;
+  left: auto;
+  transform: translate(0, -50%);
+}
+.wtk-popup__content--bottom-left {
+  bottom: 0;
+  left: 0;
+  top: auto;
+  transform: translate(0, 0);
+}
+.wtk-popup__content--bottom-center {
+  bottom: 0;
+  left: 50%;
+  top: auto;
+  transform: translate(-50%, 0);
+}
+.wtk-popup__content--bottom-right {
+  bottom: 0;
+  right: 0;
+  left: auto;
+  top: auto;
+  transform: translate(0, 0);
+}
+
+.wtk-popup__full .wtk-popup__close,
+.wtk-popup__full .wtk-popup__minimize {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  z-index: 5;
+  cursor: pointer;
+  padding: 15px;
+}
+.wtk-popup__full .wtk-popup__close::before, .wtk-popup__full .wtk-popup__close::after,
+.wtk-popup__full .wtk-popup__minimize::before,
+.wtk-popup__full .wtk-popup__minimize::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 2px;
+  height: 15px;
+  background-color: rgb(55, 55, 55);
+}
+.wtk-popup__full .wtk-popup__close::before,
+.wtk-popup__full .wtk-popup__minimize::before {
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+.wtk-popup__full .wtk-popup__close::after,
+.wtk-popup__full .wtk-popup__minimize::after {
+  transform: translate(-50%, -50%) rotate(-45deg);
+}
+.wtk-popup__full .wtk-popup__inner {
+  background-color: var(--popup-content-background-colour);
+  padding: var(--popup-padding);
+  padding: var(--popup-margin);
+  border-radius: var(--popup-border-radius);
+  position: relative;
+}
+
+.wtk-popup__minimized:not(.wtk-popup--hidden).wtk-popup__minimized--right {
+  margin-left: calc(100% - 40px);
+}
+
+.wtk-popup__minimized {
+  width: auto;
+  height: auto;
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  padding: 15px 5px;
+  display: flex;
+  flex-direction: row;
+  gap: 15px;
+  align-items: center;
+  justify-content: flex-start;
+  transition: transform 0.75s ease-in-out;
+  cursor: pointer;
+}
+.wtk-popup__minimized .wtk-popup__close {
+  width: 30px;
+  height: 30px;
+  position: relative;
+  cursor: pointer;
+}
+.wtk-popup__minimized .wtk-popup__close::before, .wtk-popup__minimized .wtk-popup__close::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: block;
+  width: 2px;
+  height: 25px;
+  background-color: rgb(55, 55, 55);
+}
+.wtk-popup__minimized .wtk-popup__close::before {
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+.wtk-popup__minimized .wtk-popup__close::after {
+  transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+.wtk-popup-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 999;
+  background-color: rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  transition: opacity 0.2s ease-in-out;
+  pointer-events: none;
+}
+.wtk-popup:not(.wtk-popup--minimized-state) .wtk-popup-backdrop {
+  pointer-events: auto;
+  opacity: 1;
+}
+
+.wtk-popup-backdrop-image__inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.wtk-popup-backdrop-image__picture {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+.wtk-popup-backdrop-image__picture-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+
+.wtk-popup-backdrop-video__inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.wtk-popup-backdrop-video__video-player {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+
+/*# sourceMappingURL=bundle.css.map*/

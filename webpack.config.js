@@ -10,13 +10,13 @@ const config = [
   // main JS bundle
   new JavascriptWebpackConfig('js', PATHS)
     .setEntry({
-      bundle: `${PATHS.SRC}/bundles/bundle.js`,
+      bundle: `${PATHS.SRC}/js/index.js`,
     })
     .getConfig(),
   // sass to css
   new CssWebpackConfig('css', PATHS)
     .setEntry({
-      bundle: `${PATHS.SRC}/styles/bundle.scss`,
+      bundle: `${PATHS.SRC}/scss/index.scss`,
     })
     .getConfig(),
 ];
