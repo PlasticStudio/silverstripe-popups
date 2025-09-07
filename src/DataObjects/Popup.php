@@ -16,6 +16,7 @@ use SilverStripe\Forms\DropdownField;
 use SilverStripe\Forms\TextareaField;
 use SilverStripe\Versioned\Versioned;
 use SilverStripe\LinkField\Models\Link;
+use UncleCheese\DisplayLogic\CriteriaSet;
 use SilverStripe\ORM\FieldType\DBDatetime;
 use SilverStripe\AssetAdmin\Forms\UploadField;
 use SilverStripe\LinkField\Form\MultiLinkField;
@@ -100,15 +101,16 @@ class Popup extends DataObject
             TextField::create('Title', 'Title'),
             TextareaField::create('Content', 'Content'),
             UploadField::create('Image', 'Image')
-                ->setFolderName('PopupImages')->setAllowedFileCategories('image'),
-                MultiLinkField::create(
-                    'Links',
-                    'Links',
-                    null,
-                    null,
-                    false,
-                    'getCMSFields_forPopup'
-                )->setDescription('Add one or more buttons/links to the popup.'),
+                ->setFolderName('PopupImages')->setAllowedFileCategories('image')
+                ->setDescription('Optional image to display in the popup.'),
+            MultiLinkField::create(
+                'Links',
+                'Links',
+                null,
+                null,
+                false,
+                'getCMSFields_forPopup'
+            )->setDescription('Add one or more buttons/links to the popup.'),
         ]);
 
         // Manage associated pages
@@ -154,28 +156,42 @@ class Popup extends DataObject
                 'Display Mode',
                 [
                     'modal' => 'Modal (center of screen)',
-                    'strip' => 'Bottom Strip (full width, bottom of screen)',
-                    'edge' => 'Left Edge (vertical, left side of screen)',
+                    'strip' => 'Strip',
+                    'edge' => 'Edge',
                 ]
             ),
+
             CheckboxField::create(
                 'EnableMinimize',
                 'Enable Minimize'
             )
                 ->setDescription('Allow the user to minimize the popup to a small bar. The popup can be restored by clicking on the bar.')
-                ->displayIf('Mode')->isIn(['strip', 'edge'])->end(),
+                ->displayIf('Mode')->isEqualTo('strip')->orIf('Mode')->isEqualTo('edge')->end(),
 
             TextField::create(
                 'MinimizedTitle',
                 'Minimized title'
             )
-                ->displayIf('Mode')->isIn(['strip', 'edge'])
-                ->andIf('EnableMinimize')->isChecked()->end(),
+                ->setDescription('The title to show when the popup is minimized. Only applies if "Enable Minimize" is checked and the display mode is "Strip" or "Edge".')
+                ->displayIf('EnableMinimize')->isChecked()
+                ->andIf()
+                    ->group()
+                        ->orIf('Mode')->isEqualTo('strip')
+                        ->orIf('Mode')->isEqualTo('edge')
+                    ->end(),,
+
+            CheckboxField::create(
+                'CollapseOnMobile',
+                'Collapse on mobile'
+            )
+                ->setDescription('Initially show the popup as minimised on mobile. Useful for more than a sentence or two of content.')
+                ->displayIf('Mode')->isEqualTo('strip')->orIf('Mode')->isEqualTo('edge')->end(),
 
             CheckboxField::create(
                 'AllPages',
                 'All Pages'
-            )->setDescription('Show this popup on all pages. Will override "Associated Pages" options below if any are set. If you\'re manually triggering the modal, this option gets ignored.'),
+            )->setDescription('Show this popup on all pages.'),
+
             DropdownField::create(
                 'LinkBy',
                 'Link by',
@@ -184,13 +200,9 @@ class Popup extends DataObject
                     'pageType' => 'Page Type',
                 ]
             )->displayIf('AllPages')->isNotChecked()->end(),
-            $pagesField,
-            $pageTypesField,
 
-            CheckboxField::create(
-                'CollapseOnMobile',
-                'Collapse on mobile'
-            )->setDescription('If the popup is too large for a mobile screen, it will be shown as minimized. The user can then tap to expand it.'),
+            $pagesField,
+            $pageTypesField
 
         ]);
 
