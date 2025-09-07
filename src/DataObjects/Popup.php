@@ -30,26 +30,29 @@ class Popup extends DataObject
 
     private static $db = [
         'Title' => 'Varchar',
+        'MinimizedTitle' => 'Varchar',
         'Content' => 'Varchar',
 
         'ExtraPopupClasses' => 'Varchar(255)',
         'ExtraMinimizeClasses' => 'Varchar(255)',
         'ExtraCloseClasses' => 'Varchar(255)',
 
-        'AlwaysShow' => 'Boolean',
+        'Mode' => "Enum('modal, strip, edge', 'modal')",
+
         'ActiveStart' => 'DBDatetime',
         'ActiveEnd' => 'DBDatetime',
-
+        
+        'EnableMinimize' => 'Boolean',
         'CollapseOnMobile' => 'Boolean',
 
         'AllPages' => 'Boolean',
         'LinkBy' => "Enum('page, pageType', 'page')",
+        'PageTypes' => 'Text', // Comma-separated list of page types
 
         'PopupSortOrder' => 'Int',
     ];
 
     private static $defaults = [
-        'Enabled' => false,
         'AllPages' => true,
         'CollapseOnMobile' => false,
     ];
@@ -72,9 +75,12 @@ class Popup extends DataObject
     ];
 
     private static $summary_fields = [
-        'Enabled.Nice' => 'Enabled',
         'Image.CMSThumbnail' => 'Image',
-        'Trigger' => 'Trigger',
+        'Title' => 'Title',
+        'Mode' => 'Display Mode',
+        'PagesList' => 'Associated Pages',
+        'ActiveStart.Nice' => 'Active Start',
+        'ActiveEnd.Nice' => 'Active End',
     ];
 
     private static $default_sort = 'PopupSortOrder';
@@ -143,6 +149,29 @@ class Popup extends DataObject
         $pageTypesField->displayIf('AllPages')->isNotChecked()->andIf('LinkBy')->isEqualTo('pageType')->end();
         
         $fields->addFieldsToTab('Root.DisplaySettings', [
+            DropdownField::create(
+                'Mode',
+                'Display Mode',
+                [
+                    'modal' => 'Modal (center of screen)',
+                    'strip' => 'Bottom Strip (full width, bottom of screen)',
+                    'edge' => 'Left Edge (vertical, left side of screen)',
+                ]
+            ),
+            CheckboxField::create(
+                'EnableMinimize',
+                'Enable Minimize'
+            )
+                ->setDescription('Allow the user to minimize the popup to a small bar. The popup can be restored by clicking on the bar.')
+                ->displayIf('Mode')->isIn(['strip', 'edge'])->end(),
+
+            TextField::create(
+                'MinimizedTitle',
+                'Minimized title'
+            )
+                ->displayIf('Mode')->isIn(['strip', 'edge'])
+                ->andIf('EnableMinimize')->isChecked()->end(),
+
             CheckboxField::create(
                 'AllPages',
                 'All Pages'
@@ -157,10 +186,6 @@ class Popup extends DataObject
             )->displayIf('AllPages')->isNotChecked()->end(),
             $pagesField,
             $pageTypesField,
-            TextField::create(
-                'MinimizedTitle',
-                'Minimized title'
-            )->displayIf('EnableMinimize')->isChecked()->end(), // TODO: fix the conditional
 
             CheckboxField::create(
                 'CollapseOnMobile',
@@ -186,7 +211,6 @@ class Popup extends DataObject
             TextField::create('ExtraCloseClasses', 'Extra Close Button Classes')
                 ->setDescription('Add any additional CSS classes to the close button.')
         ]);
-
 
         return $fields;
     }
@@ -224,22 +248,6 @@ class Popup extends DataObject
             return true;
         }
 
-        return false;
-    }
-
-    public function AlignMinimizedRight()
-    {
-        $position = $this->Position;
-        $customPosition = $this->PositionCustom;
-    
-        if ($position === 'top-right' || $position === 'center-right' || $position === 'bottom-right') {
-            return true;
-        }
-    
-        if ($customPosition !== null && strpos($customPosition, 'right') !== false) {
-            return true;
-        }
-    
         return false;
     }
 

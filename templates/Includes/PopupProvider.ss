@@ -1,13 +1,16 @@
 <% if $Popups %>
-    <div class="wtk-popups" data-count="{$Popups.Count}">
+    <div class="sp-popups" data-count="{$Popups.Count}">
         <% loop $Popups %>
-            <div class="wtk-popup wtk-popup--hidden<% if $CustomClasses %> $CustomClasses<% end_if %>"
+            <div
+                class="sp-popup sp-popup--hidden sp-popup--mode-{$Mode.LowerCase}<% if $ExtraPopupClasses %> $ExtraPopupClasses<% end_if %>"
                 data-popup-id="$ID"
                 data-trigger="$Trigger"
-                data-show-again-after="$ShowAgainAfter"
+                
+                data-mode="{$Mode.LowerCase}"
+                <% if $CollapseOnMobile %>data-collapse-on-mobile="1"<% end_if %>
             >
                 <div
-                    class="wtk-popup__content wtk-popup__content--$Position wtk-popup__content--"
+                    class="sp-popup__content sp-popup__content--$Position sp-popup__content--"
                     style="
                         width: $Width;
                         max-width: $MaxWidth;
@@ -16,10 +19,10 @@
                         <% end_if %>
                     "
                 >
-                    <div class="wtk-popup__minimized wtk-popup--hidden <% if $AlignMinimizedRight %>wtk-popup__minimized--right<% end_if %>" data-popup-id="$ID"
+                    <div class="sp-popup__minimized sp-popup--hidden <% if $AlignMinimizedRight %>sp-popup__minimized--right<% end_if %><% if $ExtraMinimizeClasses %> $ExtraMinimizeClasses<% end_if %>" data-popup-id="$ID"
                         style="<% if $PopupMinimizedTabColour %>background-color: $PopupMinimizedTabColour.rgbaColour;<% end_if %>">
-                        <button class="wtk-popup__close" data-popup-id="$ID"></button>
-                        <p class="wtk-popup__minimized-title"
+                        <button class="sp-popup__close<% if $ExtraCloseClasses %> $ExtraCloseClasses<% end_if %>" data-popup-id="$ID"></button>
+                        <p class="sp-popup__minimized-title"
                             data-popup-id="$ID" 
                             style="<% if $PopupMinimizedTabColour %>color: #{$PopupMinimizedTabColour.ContrastColour};<% end_if %>"
                         >
@@ -32,13 +35,13 @@
                         </p>
                     </div>
 
-                    <div class="wtk-popup__full" data-popup-id="$ID">
+                    <div class="sp-popup__full" data-popup-id="$ID">
                         <% if $EnableMinimize %>
-                            <button class="wtk-popup__minimize" data-popup-id="$ID"></button>
+                            <button class="sp-popup__minimize<% if $ExtraMinimizeClasses %> $ExtraMinimizeClasses<% end_if %>" data-popup-id="$ID"></button>
                         <% else %>
-                            <button class="wtk-popup__close" data-popup-id="$ID"></button>
+                            <button class="sp-popup__close<% if $ExtraCloseClasses %> $ExtraCloseClasses<% end_if %>" data-popup-id="$ID"></button>
                         <% end_if %>
-                        <div class="wtk-popup__inner">
+                        <div class="sp-popup__inner">
                             <% include ContentItem %>
                         </div>
                     </div>
@@ -46,15 +49,15 @@
 
                 <% if $EnableBackdrop %>
                     <% if $BackdropMode == "colour" %>
-                        <div class="wtk-popup-backdrop" data-popup-id="$ID" style="background-color: $PopupBackdropColour.rgbaColour;"></div>
+                        <div class="sp-popup-backdrop" data-popup-id="$ID" style="background-color: $PopupBackdropColour.rgbaColour;"></div>
                     <% else_if $BackdropMode == "image" %>
-                        <div class="wtk-popup-backdrop" data-popup-id="$ID">
+                        <div class="sp-popup-backdrop" data-popup-id="$ID">
                             <% if $PopupBackdropImage %>
-                                <div class="wtk-popup-backdrop-image">
+                                <div class="sp-popup-backdrop-image">
                                     <% with $ElementBackgroundImage %>
-                                        <div class="wtk-popup-backdrop-image__inner">
+                                        <div class="sp-popup-backdrop-image__inner">
                                             <picture
-                                                class="wtk-popup-backdrop-image__picture"
+                                                class="sp-popup-backdrop-image__picture"
                                                 style="object-position: {$FocusPoint.PercentageX}% {$FocusPoint.PercentageY}%;"
                                             >
                                                 <source
@@ -70,7 +73,7 @@
                                                 type="image/webp"
                                                 srcset="$FocusFill(1900, 1400).Format('webp').URL">
                                                 <img
-                                                class="wtk-popup-backdrop-image__picture-image"
+                                                class="sp-popup-backdrop-image__picture-image"
                                                 src="$FocusFill(1900,1400).URL"
                                                 style="object-position: {$FocusPoint.PercentageX}% {$FocusPoint.PercentageY}%"
                                                 loading="lazy"
@@ -84,19 +87,19 @@
                             <% end_if %>
                         </div>
                     <% else_if $BackdropMode == "video" %>
-                        <div class="wtk-popup-backdrop" data-popup-id="$ID">
+                        <div class="sp-popup-backdrop" data-popup-id="$ID">
                             <% if $PopupBackdropVideo %>
-                                <div class="wtk-popup-backdrop-video">
+                                <div class="sp-popup-backdrop-video">
                                     <% with $PopupBackdropVideo %>
-                                        <div class="wtk-popup-backdrop-video__inner">
+                                        <div class="sp-popup-backdrop-video__inner">
                                             <video 
-                                                class="wtk-popup-backdrop-video__video-player" 
+                                                class="sp-popup-backdrop-video__video-player" 
                                                 autoplay 
                                                 loop 
                                                 muted 
                                                 playsinline
                                             >
-                                                <source src="$URL" type="video/mp4" class="wtk-popup-backdrop-video__video">
+                                                <source src="$URL" type="video/mp4" class="sp-popup-backdrop-video__video">
                                             </video>
                                         </div>
                                     <% end_with %>

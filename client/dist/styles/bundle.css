@@ -1,7 +1,7 @@
 /*!**************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[0].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[0].use[2]!./node_modules/resolve-url-loader/index.js??ruleSet[1].rules[0].use[3]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[0].use[4]!./client/src/scss/index.scss ***!
   \**************************************************************************************************************************************************************************************************************************************************************************************************************************/
-.wtk-popup {
+.sp-popup {
   position: fixed;
   top: 0;
   right: 0;
@@ -12,15 +12,85 @@
   opacity: 1;
   transition: opacity 0.2s ease-in-out;
   pointer-events: none;
+  z-index: 1000;
 }
 
-.wtk-popup--hidden {
+.sp-popup--mode-strip {
+  top: auto;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100vw;
+  height: auto;
+  min-height: 60px;
+  pointer-events: auto;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  background: none;
+}
+
+.sp-popup--mode-strip .sp-popup__content {
+  position: static;
+  top: auto;
+  left: auto;
+  right: auto;
+  bottom: auto;
+  transform: none;
+  width: 100vw;
+  max-width: 100vw;
+  border-radius: 0;
+  box-shadow: 0 -2px 16px rgba(0, 0, 0, 0.08);
+}
+
+.sp-popup--mode-edge {
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: auto;
+  width: auto;
+  height: 100vh;
+  min-width: 60px;
+  pointer-events: auto;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  background: none;
+}
+
+.sp-popup--mode-edge .sp-popup__content {
+  position: static;
+  top: auto;
+  left: auto;
+  right: auto;
+  bottom: auto;
+  transform: none;
+  height: 100vh;
+  max-height: 100vh;
+  border-radius: 0;
+  box-shadow: -2px 0 16px rgba(0, 0, 0, 0.08);
+}
+
+@media (max-width: 600px) {
+  .sp-popup[data-collapse-on-mobile="1"] .sp-popup__full {
+    display: none !important;
+  }
+  .sp-popup[data-collapse-on-mobile="1"] .sp-popup__minimized {
+    display: flex !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+  }
+  .sp-popup[data-collapse-on-mobile="1"].sp-popup--minimized-state .sp-popup__minimized {
+    display: flex !important;
+  }
+}
+.sp-popup--hidden {
   opacity: 0;
   height: 0;
   overflow: hidden;
 }
 
-.wtk-popup__content {
+.sp-popup__content {
   position: absolute;
   pointer-events: auto;
   height: auto;
@@ -29,56 +99,56 @@
   display: flex;
   flex-direction: row;
 }
-.wtk-popup__content--center-center {
+.sp-popup__content--center-center {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
 }
-.wtk-popup__content--top-left {
+.sp-popup__content--top-left {
   top: 0;
   left: 0;
   transform: translate(0, 0);
 }
-.wtk-popup__content--top-center {
+.sp-popup__content--top-center {
   top: 0;
   left: 50%;
   transform: translate(-50%, 0);
 }
-.wtk-popup__content--top-right {
+.sp-popup__content--top-right {
   top: 0;
   right: 0;
   left: auto;
   transform: translate(0, 0);
 }
-.wtk-popup__content--center-left {
+.sp-popup__content--center-left {
   top: 50%;
   left: 0;
   transform: translate(0, -50%);
 }
-.wtk-popup__content--center {
+.sp-popup__content--center {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
 }
-.wtk-popup__content--center-right {
+.sp-popup__content--center-right {
   top: 50%;
   right: 0;
   left: auto;
   transform: translate(0, -50%);
 }
-.wtk-popup__content--bottom-left {
+.sp-popup__content--bottom-left {
   bottom: 0;
   left: 0;
   top: auto;
   transform: translate(0, 0);
 }
-.wtk-popup__content--bottom-center {
+.sp-popup__content--bottom-center {
   bottom: 0;
   left: 50%;
   top: auto;
   transform: translate(-50%, 0);
 }
-.wtk-popup__content--bottom-right {
+.sp-popup__content--bottom-right {
   bottom: 0;
   right: 0;
   left: auto;
@@ -86,8 +156,8 @@
   transform: translate(0, 0);
 }
 
-.wtk-popup__full .wtk-popup__close,
-.wtk-popup__full .wtk-popup__minimize {
+.sp-popup__full .sp-popup__close,
+.sp-popup__full .sp-popup__minimize {
   position: absolute;
   top: 0px;
   right: 0px;
@@ -95,9 +165,9 @@
   cursor: pointer;
   padding: 15px;
 }
-.wtk-popup__full .wtk-popup__close::before, .wtk-popup__full .wtk-popup__close::after,
-.wtk-popup__full .wtk-popup__minimize::before,
-.wtk-popup__full .wtk-popup__minimize::after {
+.sp-popup__full .sp-popup__close::before, .sp-popup__full .sp-popup__close::after,
+.sp-popup__full .sp-popup__minimize::before,
+.sp-popup__full .sp-popup__minimize::after {
   content: "";
   position: absolute;
   top: 50%;
@@ -106,15 +176,15 @@
   height: 15px;
   background-color: rgb(55, 55, 55);
 }
-.wtk-popup__full .wtk-popup__close::before,
-.wtk-popup__full .wtk-popup__minimize::before {
+.sp-popup__full .sp-popup__close::before,
+.sp-popup__full .sp-popup__minimize::before {
   transform: translate(-50%, -50%) rotate(45deg);
 }
-.wtk-popup__full .wtk-popup__close::after,
-.wtk-popup__full .wtk-popup__minimize::after {
+.sp-popup__full .sp-popup__close::after,
+.sp-popup__full .sp-popup__minimize::after {
   transform: translate(-50%, -50%) rotate(-45deg);
 }
-.wtk-popup__full .wtk-popup__inner {
+.sp-popup__full .sp-popup__inner {
   background-color: var(--popup-content-background-colour);
   padding: var(--popup-padding);
   padding: var(--popup-margin);
@@ -122,11 +192,11 @@
   position: relative;
 }
 
-.wtk-popup__minimized:not(.wtk-popup--hidden).wtk-popup__minimized--right {
+.sp-popup__minimized:not(.sp-popup--hidden).sp-popup__minimized--right {
   margin-left: calc(100% - 40px);
 }
 
-.wtk-popup__minimized {
+.sp-popup__minimized {
   width: auto;
   height: auto;
   writing-mode: vertical-rl;
@@ -140,13 +210,13 @@
   transition: transform 0.75s ease-in-out;
   cursor: pointer;
 }
-.wtk-popup__minimized .wtk-popup__close {
+.sp-popup__minimized .sp-popup__close {
   width: 30px;
   height: 30px;
   position: relative;
   cursor: pointer;
 }
-.wtk-popup__minimized .wtk-popup__close::before, .wtk-popup__minimized .wtk-popup__close::after {
+.sp-popup__minimized .sp-popup__close::before, .sp-popup__minimized .sp-popup__close::after {
   content: "";
   position: absolute;
   top: 50%;
@@ -156,14 +226,14 @@
   height: 25px;
   background-color: rgb(55, 55, 55);
 }
-.wtk-popup__minimized .wtk-popup__close::before {
+.sp-popup__minimized .sp-popup__close::before {
   transform: translate(-50%, -50%) rotate(45deg);
 }
-.wtk-popup__minimized .wtk-popup__close::after {
+.sp-popup__minimized .sp-popup__close::after {
   transform: translate(-50%, -50%) rotate(-45deg);
 }
 
-.wtk-popup-backdrop {
+.sp-popup-backdrop {
   position: fixed;
   top: 0;
   left: 0;
@@ -175,18 +245,18 @@
   transition: opacity 0.2s ease-in-out;
   pointer-events: none;
 }
-.wtk-popup:not(.wtk-popup--minimized-state) .wtk-popup-backdrop {
+.sp-popup:not(.sp-popup--minimized-state) .sp-popup-backdrop {
   pointer-events: auto;
   opacity: 1;
 }
 
-.wtk-popup-backdrop-image__inner {
+.sp-popup-backdrop-image__inner {
   position: relative;
   width: 100%;
   height: 100%;
 }
 
-.wtk-popup-backdrop-image__picture {
+.sp-popup-backdrop-image__picture {
   position: absolute;
   width: 100%;
   height: 100%;
@@ -196,7 +266,7 @@
   left: 0;
 }
 
-.wtk-popup-backdrop-image__picture-image {
+.sp-popup-backdrop-image__picture-image {
   display: block;
   width: 100%;
   height: 100%;
@@ -204,13 +274,13 @@
      object-fit: cover;
 }
 
-.wtk-popup-backdrop-video__inner {
+.sp-popup-backdrop-video__inner {
   position: relative;
   width: 100%;
   height: 100%;
 }
 
-.wtk-popup-backdrop-video__video-player {
+.sp-popup-backdrop-video__video-player {
   position: absolute;
   width: 100%;
   height: 100%;

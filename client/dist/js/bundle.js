@@ -48,7 +48,7 @@ module.exports = jQuery;
 
 
 function showNextPopup() {
-  const popups = $('.wtk-popup');
+  const popups = $('.sp-popup');
   for (let i = 0; i < popups.length; i++) {
     const popup = $(popups[i]);
     const shown = shouldShowPopup(popup);
@@ -58,36 +58,34 @@ function showNextPopup() {
   }
 }
 function closePopup(popupId) {
-  const popup = $(`.wtk-popup[data-popup-id='${popupId}']`);
-  const showAgainAfter = parseInt(popup.data('show-again-after'), 10);
+  const popup = $(`.sp-popup[data-popup-id='${popupId}']`);
   const now = new Date();
-  const expiryDate = showAgainAfter ? new Date(now.getTime() + showAgainAfter * 24 * 60 * 60 * 1000) : new Date(now.getTime() + 10 * 365 * 24 * 60 * 60 * 1000);
+  const expiryDate = new Date(now.getTime() + 10 * 365 * 24 * 60 * 60 * 1000);
   const expiryDateString = expiryDate.toUTCString();
   document.cookie = `popup-hidden-${popupId}=true; expires=${expiryDateString}; path=/`;
-  document.cookie = `popup-last-shown-${popupId}=${now.toUTCString()}; expires=${expiryDateString}; path=/`;
   document.cookie = `popup-minimized-${popupId}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/`;
-  popup.addClass('wtk-popup--hidden');
+  popup.addClass('sp-popup--hidden');
   setTimeout(showNextPopup, 3000);
 }
 function minimizePopup(popupId, animate) {
-  const popup = $(`.wtk-popup[data-popup-id='${popupId}']`);
+  const popup = $(`.sp-popup[data-popup-id='${popupId}']`);
   if (animate) {
-    popup.addClass('wtk-popup--animating');
+    popup.addClass('sp-popup--animating');
     setTimeout(() => {
-      popup.removeClass('wtk-popup--animating');
+      popup.removeClass('sp-popup--animating');
     }, 300);
   }
-  popup.addClass('wtk-popup--minimized-state');
-  popup.find('.wtk-popup__full').addClass('wtk-popup--hidden');
-  popup.find('.wtk-popup__minimized').removeClass('wtk-popup--hidden');
-  popup.removeClass('wtk-popup--hidden');
+  popup.addClass('sp-popup--minimized-state');
+  popup.find('.sp-popup__full').addClass('sp-popup--hidden');
+  popup.find('.sp-popup__minimized').removeClass('sp-popup--hidden');
+  popup.removeClass('sp-popup--hidden');
   document.cookie = `popup-minimized-${popupId}=true; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/`;
 }
 function showFullPopup(popupId) {
-  const popup = $(`.wtk-popup[data-popup-id='${popupId}']`);
-  popup.removeClass('wtk-popup--minimized-state');
-  popup.find('.wtk-popup__minimized').addClass('wtk-popup--hidden');
-  popup.find('.wtk-popup__full').removeClass('wtk-popup--hidden');
+  const popup = $(`.sp-popup[data-popup-id='${popupId}']`);
+  popup.removeClass('sp-popup--minimized-state');
+  popup.find('.sp-popup__minimized').addClass('sp-popup--hidden');
+  popup.find('.sp-popup__full').removeClass('sp-popup--hidden');
   document.cookie = `popup-minimized-${popupId}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/`;
 }
 function getCookie(name) {
@@ -101,37 +99,35 @@ function getCookie(name) {
   return null;
 }
 function shouldShowPopup(popup) {
-  const now = new Date();
   const popupId = popup.data('popup-id');
   const popupHidden = getCookie(`popup-hidden-${popupId}`);
-  const showAgainAfter = parseInt(popup.data('show-again-after'), 10);
   if (popupHidden) {
     return false;
-  }
-  if (!isNaN(showAgainAfter) && showAgainAfter > 0) {
-    const lastShown = new Date(getCookie(`popup-last-shown-${popupId}`));
-    if ((now - lastShown) / (1000 * 3600 * 24) < showAgainAfter) {
-      return false;
-    }
   }
   if (getCookie(`popup-minimized-${popupId}`) === 'true') {
     minimizePopup(popupId, false);
   } else {
-    popup.removeClass('wtk-popup--hidden');
+    popup.removeClass('sp-popup--hidden');
   }
   return true;
 }
 function setupPopup(popup) {
   const popupId = popup.data('popup-id');
+  const collapseOnMobile = popup.data('collapse-on-mobile') === 1 || popup.data('collapse-on-mobile') === '1';
+  const isMobile = window.matchMedia('(max-width: 600px)').matches;
+  if (collapseOnMobile && isMobile) {
+    minimizePopup(popupId, false);
+    return;
+  }
   if (getCookie(`popup-minimized-${popupId}`) === 'true') {
     minimizePopup(popupId, false);
   } else {
-    popup.removeClass('wtk-popup--hidden');
+    popup.removeClass('sp-popup--hidden');
   }
 }
 $(() => {
   console.log('[silverstripe-popups] loaded');
-  $('.wtk-popup').each(function () {
+  $('.sp-popup').each(function () {
     const popup = $(this);
     setupPopup(popup);
   });
@@ -144,22 +140,22 @@ $('.c-popup').on('click', function () {
 $('.c-popup__inner').on('click', e => {
   e.stopPropagation();
 });
-$('.wtk-popup__minimize').on('click', function () {
+$('.sp-popup__minimize').on('click', function () {
   const popupId = $(this).data('popup-id');
   minimizePopup(popupId, true);
 });
-$('.wtk-popup__minimized').on('click', function () {
+$('.sp-popup__minimized').on('click', function () {
   const popupId = $(this).data('popup-id');
   showFullPopup(popupId);
 });
-$('.wtk-popup__close').on('click', function () {
+$('.sp-popup__close').on('click', function () {
   const popupId = $(this).data('popup-id');
   closePopup(popupId);
 });
-$('.wtk-popup__backdrop').on('click', function () {
+$('.sp-popup__backdrop').on('click', function () {
   const popupId = $(this).data('popup-id');
-  const popup = $(`.wtk-popup[data-popup-id='${popupId}']`);
-  if (popup.find('.wtk-popup__minimize').length > 0) {
+  const popup = $(`.sp-popup[data-popup-id='${popupId}']`);
+  if (popup.find('.sp-popup__minimize').length > 0) {
     minimizePopup(popupId, true);
   } else {
     closePopup(popupId);
