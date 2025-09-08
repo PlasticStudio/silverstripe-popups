@@ -10,7 +10,7 @@
                 <% if $CollapseOnMobile %>data-collapse-on-mobile="1"<% end_if %>
             >
                 <div class="sp-popup__content">
-                    <% if $Mode != 'modal' %>
+                    <% if $Mode != 'modal' && $EnableMinimize %>
                         <div class="sp-popup__minimized sp-popup--hidden<% if $ExtraMinimizeClasses %> $ExtraMinimizeClasses<% end_if %>" data-popup-id="$ID">
                             <button class="sp-popup__close<% if $ExtraCloseClasses %> $ExtraCloseClasses<% end_if %>" data-popup-id="$ID"></button>
                             <p class="sp-popup__minimized-title" data-popup-id="$ID">
@@ -36,7 +36,7 @@
                         <div class="sp-popup__inner">
                             <% if $Image %>
                                 <div class="sp-popup__image">
-                                    <img src="$Image.FocusFill(400,300).URL" alt="$Image.Title.ATT" />
+                                    <img src="$Image.URL" alt="$Image.Title.ATT" />
                                 </div>
                             <% end_if %>
 

@@ -167,14 +167,22 @@ $('.sp-popup__close').on('click', function () {
   const popupId = $(this).data('popup-id');
   closePopup(popupId);
 });
+$(document).on('click', '.sp-popup--mode-strip .sp-popup__content, .sp-popup--mode-edge .sp-popup__content', function (e) {
+  if (e.target === this) {
+    const popupId = $(this).closest('.sp-popup').data('popup-id');
+    const popup = $(`.sp-popup[data-popup-id='${popupId}']`);
+    const hasMinimize = popup.find('.sp-popup__minimize').length > 0;
+    if (hasMinimize) {
+      minimizePopup(popupId, true);
+    }
+  }
+});
 $('.sp-popup__backdrop').on('click', function () {
   const popupId = $(this).data('popup-id');
   const popup = $(`.sp-popup[data-popup-id='${popupId}']`);
   const mode = popup.data('mode');
   const hasMinimize = popup.find('.sp-popup__minimize').length > 0;
-  if (hasMinimize && (mode === 'strip' || mode === 'edge')) {
-    minimizePopup(popupId, true);
-  } else if (hasMinimize && mode === 'modal') {
+  if (hasMinimize && mode === 'modal') {
     minimizePopup(popupId, true);
   } else {
     closePopup(popupId);

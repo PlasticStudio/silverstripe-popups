@@ -9,6 +9,10 @@
   /* Content */
   --popup-content-background-colour: #ffffff;
   --popup-max-width: 640px;
+  /* Image sizing */
+  --popup-image-max-width: 400px;
+  --popup-image-max-height: 300px;
+  --popup-image-aspect-ratio: 4/3;
   /* Spacing */
   --popup-padding: 16px;
   /* inner padding for popup content */
@@ -41,9 +45,17 @@
 .sp-popup__image img {
   display: block;
   width: 100%;
+  max-width: 400px;
+  max-width: var(--popup-image-max-width);
+  max-height: 300px;
+  max-height: var(--popup-image-max-height);
   height: auto;
-  -o-object-fit: contain;
-     object-fit: contain;
+  -o-object-fit: cover;
+     object-fit: cover;
+  aspect-ratio: 4/3;
+  aspect-ratio: var(--popup-image-aspect-ratio);
+  border-radius: calc(8px / 2);
+  border-radius: calc(var(--popup-border-radius) / 2);
 }
 
 .sp-popup--mode-modal {

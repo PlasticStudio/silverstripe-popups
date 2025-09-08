@@ -179,18 +179,29 @@ $('.sp-popup__close').on('click', function () {
   closePopup(popupId);
 });
 
+// Add click handler for strip/edge popup content areas to minimize when minimize is available
+$(document).on('click', '.sp-popup--mode-strip .sp-popup__content, .sp-popup--mode-edge .sp-popup__content', function (e) {
+  // Only trigger if clicking on the content wrapper itself, not inner elements
+  if (e.target === this) {
+    const popupId = $(this).closest('.sp-popup').data('popup-id');
+    const popup = $(`.sp-popup[data-popup-id='${popupId}']`);
+    const hasMinimize = popup.find('.sp-popup__minimize').length > 0;
+
+    if (hasMinimize) {
+      minimizePopup(popupId, true);
+    }
+  }
+});
+
 $('.sp-popup__backdrop').on('click', function () {
   const popupId = $(this).data('popup-id');
   const popup = $(`.sp-popup[data-popup-id='${popupId}']`);
 
   // For modal popups: check if minimize is available, otherwise close
-  // For strip/edge popups: always minimize if available (since they don't typically close on backdrop)
   const mode = popup.data('mode');
   const hasMinimize = popup.find('.sp-popup__minimize').length > 0;
-  
-  if (hasMinimize && (mode === 'strip' || mode === 'edge')) {
-    minimizePopup(popupId, true); // Strip/edge popups should minimize
-  } else if (hasMinimize && mode === 'modal') {
+
+  if (hasMinimize && mode === 'modal') {
     minimizePopup(popupId, true); // Modal with minimize available
   } else {
     closePopup(popupId); // No minimize available, close the popup
