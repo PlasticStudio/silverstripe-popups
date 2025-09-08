@@ -8,11 +8,6 @@
   --popup-content-background-colour: #ffffff;
   --popup-max-width: 640px;
 
-  /* Image sizing */
-  --popup-image-max-width: 400px;
-  --popup-image-max-height: 300px;
-  --popup-image-aspect-ratio: 4/3;
-
   /* Spacing */
   --popup-padding: 16px;
   /* inner padding for popup content */
@@ -55,12 +50,8 @@
   img {
     display: block;
     width: 100%;
-    max-width: var(--popup-image-max-width);
-    max-height: var(--popup-image-max-height);
     height: auto;
     object-fit: cover;
-    aspect-ratio: var(--popup-image-aspect-ratio);
-    border-radius: calc(var(--popup-border-radius) / 2);
   }
 }
 
