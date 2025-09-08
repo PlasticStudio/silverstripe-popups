@@ -22,19 +22,6 @@
   --popup-z-index: 1000;
 }
 
-/* Local aliasing scoped to the component wrapper so consumers can override at the component level
-  if they prefer (e.g. .sp-popups { --popup-padding: 8px; }) */
-.sp-popups {
-  --popup-content-background-colour: var(--popup-content-background-colour);
-  --popup-max-width: var(--popup-max-width);
-  --popup-padding: var(--popup-padding);
-  --popup-margin: var(--popup-margin);
-  --popup-border-radius: var(--popup-border-radius);
-  --popup-backdrop-color: var(--popup-backdrop-color);
-  --popup-close-color: var(--popup-close-color);
-  --popup-z-index: var(--popup-z-index);
-}
-
 .sp-popup {
   position: fixed;
   top: 0;
