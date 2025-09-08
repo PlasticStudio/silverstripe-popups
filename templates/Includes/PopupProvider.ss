@@ -24,10 +24,14 @@
                     <% end_if %>
 
                     <div class="sp-popup__full" data-popup-id="$ID">
-                        <% if $EnableMinimize %>
-                            <button class="sp-popup__minimize<% if $ExtraMinimizeClasses %> $ExtraMinimizeClasses<% end_if %>" data-popup-id="$ID"></button>
-                        <% else %>
+                        <% if $Mode == 'modal' %>
                             <button class="sp-popup__close<% if $ExtraCloseClasses %> $ExtraCloseClasses<% end_if %>" data-popup-id="$ID"></button>
+                        <% else %>
+                            <% if $EnableMinimize %>
+                                <button class="sp-popup__minimize<% if $ExtraMinimizeClasses %> $ExtraMinimizeClasses<% end_if %>" data-popup-id="$ID"></button>
+                            <% else %>
+                                <button class="sp-popup__close<% if $ExtraCloseClasses %> $ExtraCloseClasses<% end_if %>" data-popup-id="$ID"></button>
+                            <% end_if %>
                         <% end_if %>
                         <div class="sp-popup__inner">
                             <% if $Image %>
