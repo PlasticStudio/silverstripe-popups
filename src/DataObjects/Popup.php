@@ -8,6 +8,7 @@ use SilverStripe\Core\ClassInfo;
 use SilverStripe\ORM\DataObject;
 use SilverStripe\Forms\TextField;
 use SilverStripe\CMS\Model\SiteTree;
+use SilverStripe\Core\Config\Config;
 use SilverStripe\Forms\ListboxField;
 use SilverStripe\Forms\LiteralField;
 use SilverStripe\Forms\NumericField;
@@ -16,12 +17,12 @@ use SilverStripe\Forms\DatetimeField;
 use SilverStripe\Forms\DropdownField;
 use SilverStripe\Forms\TextareaField;
 use SilverStripe\Versioned\Versioned;
+use SilverStripe\Forms\HtmlEditorField;
 use SilverStripe\LinkField\Models\Link;
 use UncleCheese\DisplayLogic\CriteriaSet;
 use SilverStripe\ORM\FieldType\DBDatetime;
 use SilverStripe\AssetAdmin\Forms\UploadField;
 use SilverStripe\LinkField\Form\MultiLinkField;
-use SilverStripe\Core\Config\Config;
 
 class Popup extends DataObject
 {
@@ -34,7 +35,8 @@ class Popup extends DataObject
     private static $db = [
         'Title' => 'Varchar',
         'MinimizedTitle' => 'Varchar',
-        'Content' => 'Varchar',
+        'Content' => 'HTMLText',
+        'RawEmbed' => 'Text',
         
         'ExtraPopupClasses' => 'Varchar(255)',
         'ExtraMinimizeClasses' => 'Varchar(255)',
@@ -59,7 +61,7 @@ class Popup extends DataObject
     private static $defaults = [
         'AllPages' => true,
         'CollapseOnMobile' => false,
-    'ShowAfter' => 0,
+        'ShowAfter' => 0,
     ];
     
     private static $has_one = [
@@ -103,10 +105,12 @@ class Popup extends DataObject
 
         $fields->addFieldsToTab('Root.Content', [
             TextField::create('Title', 'Title'),
-            TextareaField::create('Content', 'Content'),
+            HtmlEditorField::create('Content', 'Content'),
             UploadField::create('Image', 'Image')
                 ->setFolderName('PopupImages')->setAllowedFileCategories('image')
                 ->setDescription('Optional image to display in the popup.'),
+            TextareaField::create('RawEmbed', 'Raw Embed Code')
+                ->setDescription('Optional raw embed code (for example: video iframe or newsletter signup). Note that some providers may restrict embedding on different domains.'),
             MultiLinkField::create(
                 'Links',
                 'Links',
