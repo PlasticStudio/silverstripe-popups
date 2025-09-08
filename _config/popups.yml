@@ -1,4 +1,2 @@
-# Popup module configuration
 PlasticStudio\SilverstripePopups\DataObjects\Popup:
-  # Cookie expiry time in milliseconds (default: 1 month)
   cookie_expiry_time: 2628000000 # 30.4 days * 24 hours * 60 minutes * 60 seconds * 1000 milliseconds
