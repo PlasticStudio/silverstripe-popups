@@ -5,11 +5,16 @@ namespace PlasticStudio\SilverstripePopups\Extensions;
 use SilverStripe\Core\Extension;
 use SilverStripe\Forms\FieldList;
 use SilverStripe\Forms\TextField;
+use PlasticStudio\SilverstripePopups\DataObjects\Popup;
 
 class LinkExtension extends Extension
 {
     private static $db = [
         'ExtraClasses' => 'Varchar(255)',
+    ];
+
+    private static $has_one = [
+        'Popup' => Popup::class,
     ];
 
     public function updateCMSFields(FieldList $fields)
