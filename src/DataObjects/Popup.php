@@ -17,12 +17,11 @@ use SilverStripe\Forms\DatetimeField;
 use SilverStripe\Forms\DropdownField;
 use SilverStripe\Forms\TextareaField;
 use SilverStripe\Versioned\Versioned;
-use SilverStripe\Forms\HTMLEditorField;
 use SilverStripe\LinkField\Models\Link;
-use UncleCheese\DisplayLogic\CriteriaSet;
 use SilverStripe\ORM\FieldType\DBDatetime;
 use SilverStripe\AssetAdmin\Forms\UploadField;
 use SilverStripe\LinkField\Form\MultiLinkField;
+use SilverStripe\Forms\HTMLEditor\HTMLEditorField;
 
 class Popup extends DataObject
 {
