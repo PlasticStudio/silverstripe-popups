@@ -5,7 +5,6 @@ namespace PlasticStudio\SilverstripePopups\Admin;
 use SilverStripe\Admin\ModelAdmin;
 use SilverStripe\Forms\GridField\GridField;
 use PlasticStudio\SilverstripePopups\DataObjects\Popup;
-use PlasticStudio\WebToolkit\GridField\GridFieldCloneAction;
 use UndefinedOffset\SortableGridField\Forms\GridFieldSortableRows;
 
 class PopupAdmin extends ModelAdmin
@@ -26,7 +25,6 @@ class PopupAdmin extends ModelAdmin
         if($this->modelClass == 'Popup' && $gridField = $form->Fields()->dataFieldByName($this->sanitiseClassName($this->modelClass))) {
             if($gridField instanceof GridField) {
                 $gridField->getConfig()->addComponent(new GridFieldSortableRows('PopupSortOrder'));
-                $gridField->getConfig()->addComponent(GridFieldCloneAction::create());
             }
         }
 

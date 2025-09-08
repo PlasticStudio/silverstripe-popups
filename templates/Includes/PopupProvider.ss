@@ -9,7 +9,7 @@
                 data-show-after="$ShowAfter"
                 <% if $CollapseOnMobile %>data-collapse-on-mobile="1"<% end_if %>
             >
-                <div class="sp-popup__content sp-popup__content--center-center">
+                <div class="sp-popup__content">
                     <div class="sp-popup__minimized sp-popup--hidden<% if $ExtraMinimizeClasses %> $ExtraMinimizeClasses<% end_if %>" data-popup-id="$ID">
                         <button class="sp-popup__close<% if $ExtraCloseClasses %> $ExtraCloseClasses<% end_if %>" data-popup-id="$ID"></button>
                         <p class="sp-popup__minimized-title" data-popup-id="$ID">
@@ -28,33 +28,35 @@
                             <button class="sp-popup__close<% if $ExtraCloseClasses %> $ExtraCloseClasses<% end_if %>" data-popup-id="$ID"></button>
                         <% end_if %>
                         <div class="sp-popup__inner">
-                            <% if $Title %>
-                                <h3 class="sp-popup__title">$Title</h3>
-                            <% end_if %>
-
-                            <% if $Content %>
-                                <div class="sp-popup__content-text">
-                                    $Content
-                                </div>
-                            <% end_if %>
-
                             <% if $Image %>
                                 <div class="sp-popup__image">
                                     <img src="$Image.FocusFill(400,300).URL" alt="$Image.Title.ATT" />
                                 </div>
                             <% end_if %>
 
-                            <% if $Links.exists %>
-                                <div class="sp-popup__links">
-                                    <% loop $Links %>
-                                        <% if $LinkURL %>
-                                            <a href="$LinkURL" class="sp-popup__link<% if $ExtraClasses %> $ExtraClasses<% end_if %>"<% if $OpenInNew %> target="_blank" rel="noopener"<% end_if %>>
-                                                $Title
-                                            </a>
-                                        <% end_if %>
-                                    <% end_loop %>
-                                </div>
-                            <% end_if %>
+                            <div class="sp-popup__inner-content">
+                                <% if $Title %>
+                                    <h3 class="sp-popup__title">$Title</h3>
+                                <% end_if %>
+
+                                <% if $Content %>
+                                    <div class="sp-popup__content-text">
+                                        $Content
+                                    </div>
+                                <% end_if %>
+
+                                <% if $Links.exists %>
+                                    <div class="sp-popup__links">
+                                        <% loop $Links %>
+                                            <% if $LinkURL %>
+                                                <a href="$LinkURL" class="sp-popup__link<% if $ExtraClasses %> $ExtraClasses<% end_if %>"<% if $OpenInNew %> target="_blank" rel="noopener"<% end_if %>>
+                                                    $Title
+                                                </a>
+                                            <% end_if %>
+                                        <% end_loop %>
+                                    </div>
+                                <% end_if %>
+                            </div>
                         </div>
                     </div>
                 </div>
