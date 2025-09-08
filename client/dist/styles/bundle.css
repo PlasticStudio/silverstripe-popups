@@ -1,6 +1,41 @@
 /*!**************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[0].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[0].use[2]!./node_modules/resolve-url-loader/index.js??ruleSet[1].rules[0].use[3]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[0].use[4]!./client/src/scss/index.scss ***!
   \**************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*
+ Default CSS custom properties for the SilverStripe Popups component.
+ Override these in your project (in a higher-specificity selector or global :root) to customize
+ the look-and-feel without touching the component styles.
+*/
+:root {
+  /* Content */
+  --popup-content-background-colour: #ffffff;
+  --popup-max-width: 640px;
+  /* Spacing */
+  --popup-padding: 16px; /* inner padding for popup content */
+  --popup-margin: 0; /* external margin for popup component */
+  /* Shape */
+  --popup-border-radius: 8px;
+  /* Backdrop */
+  --popup-backdrop-color: rgba(0, 0, 0, 0.5);
+  /* Controls */
+  --popup-close-color: #373737;
+  /* Layering */
+  --popup-z-index: 1000;
+}
+
+/* Local aliasing scoped to the component wrapper so consumers can override at the component level
+   if they prefer (e.g. .sp-popups { --popup-padding: 8px; }) */
+.sp-popups {
+  --popup-content-background-colour: var(--popup-content-background-colour);
+  --popup-max-width: var(--popup-max-width);
+  --popup-padding: var(--popup-padding);
+  --popup-margin: var(--popup-margin);
+  --popup-border-radius: var(--popup-border-radius);
+  --popup-backdrop-color: var(--popup-backdrop-color);
+  --popup-close-color: var(--popup-close-color);
+  --popup-z-index: var(--popup-z-index);
+}
+
 .sp-popup {
   position: fixed;
   top: 0;
@@ -185,9 +220,15 @@
   transform: translate(-50%, -50%) rotate(-45deg);
 }
 .sp-popup__full .sp-popup__inner {
+  display: grid;
+  grid-template: 150px 1fr;
+  background-color: #ffffff;
   background-color: var(--popup-content-background-colour);
+  padding: 16px;
   padding: var(--popup-padding);
-  padding: var(--popup-margin);
+  margin: 0;
+  margin: var(--popup-margin);
+  border-radius: 8px;
   border-radius: var(--popup-border-radius);
   position: relative;
 }
@@ -288,6 +329,14 @@
   right: 0;
   bottom: 0;
   left: 0;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+
+.sp-popup-backdrop-video__video {
+  display: block;
+  width: 100%;
+  height: 100%;
   -o-object-fit: cover;
      object-fit: cover;
 }

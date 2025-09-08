@@ -1,0 +1,26 @@
+/*
+ Example variables file for SilverStripe Popups.
+
+ Available variables and purpose:
+
+ --popup-content-background-colour: Background colour used for the popup inner container.
+ --popup-max-width: Maximum width for centered modal-style popups.
+ --popup-padding: Inner padding for popup content (preferred: spacing inside popup).
+ --popup-margin: External margin for popup component (rarely used; present for API parity).
+ --popup-border-radius: Border radius for popup content boxes.
+ --popup-backdrop-color: Colour for modal backdrop (supports rgba for opacity).
+ --popup-close-color: Colour used for the close / minimize icons.
+ --popup-z-index: Z-index for the popup wrapper and content.
+
+ Example overrides:
+
+:root {
+  --popup-content-background-colour: #f7f9fb;
+  --popup-max-width: 720px;
+  --popup-padding: 20px;
+  --popup-margin: 0;
+  --popup-border-radius: 12px;
+  --popup-backdrop-color: rgba(0,0,0,0.6);
+  --popup-close-color: #222;
+  --popup-z-index: 1200;
+}

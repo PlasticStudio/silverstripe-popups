@@ -55,10 +55,17 @@ function showNextPopup() {
   });
   for (let i = 0; i < popups.length; i++) {
     const popup = $(popups[i]);
-    const shown = shouldShowPopup(popup);
-    if (shown) {
-      break;
+    const popupId = popup.data('popup-id');
+    if (getCookie(`popup-hidden-${popupId}`)) {
+      continue;
     }
+    const showAfter = parseInt(popup.data('show-after') || 0, 10);
+    setTimeout(() => {
+      if (!getCookie(`popup-hidden-${popupId}`)) {
+        setupPopup(popup);
+      }
+    }, showAfter * 1000);
+    break;
   }
 }
 function closePopup(popupId) {
@@ -134,9 +141,12 @@ $(() => {
   console.log('[silverstripe-popups] loaded');
   $('.sp-popup').each(function () {
     const popup = $(this);
-    setupPopup(popup);
+    const popupId = popup.data('popup-id');
+    if (getCookie(`popup-minimized-${popupId}`) === 'true') {
+      minimizePopup(popupId, false);
+    }
   });
-  setTimeout(showNextPopup, 3000);
+  setTimeout(showNextPopup, 500);
 });
 $('.c-popup').on('click', function () {
   const popupId = $(this).data('popup-id');

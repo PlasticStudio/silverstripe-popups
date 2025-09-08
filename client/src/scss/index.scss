@@ -1,6 +1,6 @@
-.sp-popups {
-}
+@import './_variables';
 
+// .sp-popups {}
 
 .sp-popup {
   position: fixed;
@@ -217,14 +217,13 @@
     }
   }
 
-  .sp-popup__inner {
+    .sp-popup__inner {
     display:grid;
     grid-template: 150px 1fr;
-    padding: 15px;
 
     background-color: var(--popup-content-background-colour);
     padding: var(--popup-padding);
-    padding: var(--popup-margin);
+    margin: var(--popup-margin);
     border-radius: var(--popup-border-radius);
     position: relative;
   }
@@ -340,4 +339,8 @@
 }
 
 .sp-popup-backdrop-video__video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
