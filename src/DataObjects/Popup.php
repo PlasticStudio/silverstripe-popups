@@ -17,7 +17,7 @@ use SilverStripe\Forms\DatetimeField;
 use SilverStripe\Forms\DropdownField;
 use SilverStripe\Forms\TextareaField;
 use SilverStripe\Versioned\Versioned;
-use SilverStripe\Forms\HtmlEditorField;
+use SilverStripe\Forms\HTMLEditorField;
 use SilverStripe\LinkField\Models\Link;
 use UncleCheese\DisplayLogic\CriteriaSet;
 use SilverStripe\ORM\FieldType\DBDatetime;
@@ -105,7 +105,7 @@ class Popup extends DataObject
 
         $fields->addFieldsToTab('Root.Content', [
             TextField::create('Title', 'Title'),
-            HtmlEditorField::create('Content', 'Content'),
+            HTMLEditorField::create('Content', 'Content'),
             UploadField::create('Image', 'Image')
                 ->setFolderName('PopupImages')->setAllowedFileCategories('image')
                 ->setDescription('Optional image to display in the popup.'),
