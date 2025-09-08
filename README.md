@@ -20,8 +20,8 @@ Run `dev/build` to create the database tables and visit `/admin/popups` to start
 
 ## Features
 
-- **Three display modes**: Modal (center), Strip (bottom bar), Edge (right side)
-- **Smart scheduling**: Show popups between specific dates/times
+- **Display modes**: Modal (center), Strip (bottom bar), Edge (right side)
+- **Scheduling**: Show popups between specific dates/times
 - **Page targeting**: Display on all pages, specific pages, or page types
 - **Minimize functionality**: Allow users to minimize strip/edge popups
 - **Mobile responsive**: Optional mobile collapse for better UX

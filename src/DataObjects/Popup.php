@@ -60,7 +60,7 @@ class Popup extends DataObject
     private static $defaults = [
         'AllPages' => true,
         'CollapseOnMobile' => false,
-        'ShowAfter' => 0,
+        'ShowAfter' => 30,
     ];
     
     private static $has_one = [
@@ -68,7 +68,7 @@ class Popup extends DataObject
     ];
 
     private static $has_many = [
-        'Links' => Link::class
+        'Links' => Link::class . '.Owner',
     ];
 
     private static $many_many = [
@@ -77,6 +77,14 @@ class Popup extends DataObject
 
     private static $owns = [
         'Image',
+        'Links',
+    ];
+
+    private static array $cascade_deletes = [
+        'Links',
+    ];
+
+    private static array $cascade_duplicates = [
         'Links',
     ];
 
