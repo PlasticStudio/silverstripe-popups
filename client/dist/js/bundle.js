@@ -129,12 +129,12 @@ function setupPopup(popup) {
   const isMobile = window.matchMedia('(max-width: 600px)').matches;
   if (collapseOnMobile && isMobile) {
     minimizePopup(popupId, false);
-    return;
-  }
-  if (getCookie(`popup-minimized-${popupId}`) === 'true') {
-    minimizePopup(popupId, false);
   } else {
-    popup.removeClass('sp-popup--hidden');
+    if (getCookie(`popup-minimized-${popupId}`) === 'true') {
+      minimizePopup(popupId, false);
+    } else {
+      popup.removeClass('sp-popup--hidden');
+    }
   }
 }
 $(() => {

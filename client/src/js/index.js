@@ -115,19 +115,21 @@ function shouldShowPopup(popup) {
 
 function setupPopup(popup) {
   const popupId = popup.data('popup-id');
-  // CollapseOnMobile: if set, always minimize on mobile
+  // CollapseOnMobile: if set, always minimize on mobile initially
   const collapseOnMobile = popup.data('collapse-on-mobile') === 1 || popup.data('collapse-on-mobile') === '1';
   const isMobile = window.matchMedia('(max-width: 600px)').matches;
+  
   if (collapseOnMobile && isMobile) {
-    minimizePopup(popupId, false);
-    return;
-  }
-  // Check the minimized cookie and conditionally minimize
-  if (getCookie(`popup-minimized-${popupId}`) === 'true') {
+    // On mobile with CollapseOnMobile, start minimized but still allow expansion
     minimizePopup(popupId, false);
   } else {
-    // If not minimized, show the full popup
-    popup.removeClass('sp-popup--hidden');
+    // Check the minimized cookie and conditionally minimize
+    if (getCookie(`popup-minimized-${popupId}`) === 'true') {
+      minimizePopup(popupId, false);
+    } else {
+      // If not minimized, show the full popup
+      popup.removeClass('sp-popup--hidden');
+    }
   }
 }
 

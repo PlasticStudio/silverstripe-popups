@@ -151,19 +151,25 @@
 // Responsive: CollapseOnMobile (minimize on mobile if data-collapse-on-mobile)
 @media (max-width: 600px) {
   .sp-popup[data-collapse-on-mobile="1"] {
-    // Always minimized state on mobile
-    .sp-popup__full {
-      display: none !important;
-    }
-    .sp-popup__minimized {
-      display: flex !important;
-      opacity: 1 !important;
-      pointer-events: auto !important;
-    }
+    // Initially minimized state on mobile, but allow expansion
     &.sp-popup--minimized-state {
-      // Already minimized, just ensure visible
+      .sp-popup__full {
+        display: none;
+      }
       .sp-popup__minimized {
-        display: flex !important;
+        display: flex;
+        opacity: 1;
+        pointer-events: auto;
+      }
+    }
+    
+    // When not in minimized state (expanded), show full content
+    &:not(.sp-popup--minimized-state) {
+      .sp-popup__minimized {
+        display: none;
+      }
+      .sp-popup__full {
+        display: block;
       }
     }
   }
@@ -278,6 +284,28 @@
   right: 0;
   bottom: 20%;
   margin: 0;
+  box-shadow: var(--popup-edge-shadow);
+}
+
+// Strip mode minimized state - horizontal layout
+.sp-popup--mode-strip .sp-popup__minimized {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100vw;
+  height: auto;
+  writing-mode: initial;
+  text-orientation: initial;
+  padding: 15px 20px;
+  display: flex;
+  flex-direction: row;
+  gap: 0;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0;
+  border-radius: 0;
+  box-shadow: var(--popup-strip-shadow);
 }
 
 .sp-popup__minimized {
