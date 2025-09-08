@@ -10,6 +10,7 @@ use SilverStripe\Forms\TextField;
 use SilverStripe\CMS\Model\SiteTree;
 use SilverStripe\Forms\ListboxField;
 use SilverStripe\Forms\LiteralField;
+use SilverStripe\Forms\NumericField;
 use SilverStripe\Forms\CheckboxField;
 use SilverStripe\Forms\DatetimeField;
 use SilverStripe\Forms\DropdownField;
@@ -34,12 +35,13 @@ class Popup extends DataObject
         'Title' => 'Varchar',
         'MinimizedTitle' => 'Varchar',
         'Content' => 'Varchar',
-
+        
         'ExtraPopupClasses' => 'Varchar(255)',
         'ExtraMinimizeClasses' => 'Varchar(255)',
         'ExtraCloseClasses' => 'Varchar(255)',
-
+        
         'Mode' => "Enum('modal, strip, edge', 'modal')",
+        'ShowAfter' => 'Int',
 
         'ActiveStart' => 'DBDatetime',
         'ActiveEnd' => 'DBDatetime',
@@ -57,6 +59,7 @@ class Popup extends DataObject
     private static $defaults = [
         'AllPages' => true,
         'CollapseOnMobile' => false,
+    'ShowAfter' => 0,
     ];
     
     private static $has_one = [
@@ -153,6 +156,9 @@ class Popup extends DataObject
         $pageTypesField->displayIf('AllPages')->isNotChecked()->andIf('LinkBy')->isEqualTo('pageType')->end();
         
         $fields->addFieldsToTab('Root.DisplaySettings', [
+            NumericField::create('ShowAfter', 'Show after (seconds)')
+                ->setDescription('Delay before showing this popup, in seconds. 0 shows immediately.'),
+
             DropdownField::create(
                 'Mode',
                 'Display Mode',

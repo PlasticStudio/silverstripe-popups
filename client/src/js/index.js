@@ -6,12 +6,28 @@ function showNextPopup() {
     return sortA - sortB;
   });
   
+  // Show the first eligible popup (respecting cookies and minimized state)
   for (let i = 0; i < popups.length; i++) {
     const popup = $(popups[i]);
-    const shown = shouldShowPopup(popup);
-    if (shown) {
-      break;
+    const popupId = popup.data('popup-id');
+
+    // Skip if cookie says hidden
+    if (getCookie(`popup-hidden-${popupId}`)) {
+      continue;
     }
+
+    const showAfter = parseInt(popup.data('show-after') || 0, 10);
+
+    // Schedule showing taking into account the configured delay
+    setTimeout(() => {
+      // If still eligible at show time, run setup/show
+      if (!getCookie(`popup-hidden-${popupId}`)) {
+        setupPopup(popup);
+      }
+    }, showAfter * 1000);
+
+    // Only schedule the first eligible popup in order
+    break;
   }
 }
 
@@ -121,12 +137,19 @@ $(() => {
   console.log('[silverstripe-popups] loaded');
 
   // Call setupPopup AFTER the DOM is ready
+  // We still want to initialize minimized state and similar for all popups immediately
   $('.sp-popup').each(function () {
     const popup = $(this);
-    setupPopup(popup);
+    const popupId = popup.data('popup-id');
+
+    // If popup is minimized via cookie, reflect that immediately
+    if (getCookie(`popup-minimized-${popupId}`) === 'true') {
+      minimizePopup(popupId, false);
+    }
   });
 
-  setTimeout(showNextPopup, 3000); // Delay showing the next popup
+  // Start the showNextPopup flow after a short initial delay (gives the page time to settle)
+  setTimeout(showNextPopup, 500);
 });
 
 // Click Handlers

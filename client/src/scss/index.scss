@@ -218,6 +218,10 @@
   }
 
   .sp-popup__inner {
+    display:grid;
+    grid-template: 150px 1fr;
+    padding: 15px;
+
     background-color: var(--popup-content-background-colour);
     padding: var(--popup-padding);
     padding: var(--popup-margin);

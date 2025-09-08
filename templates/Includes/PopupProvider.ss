@@ -6,6 +6,7 @@
                 data-popup-id="$ID"
                 data-sort-order="$PopupSortOrder"
                 data-mode="{$Mode.LowerCase}"
+                data-show-after="$ShowAfter"
                 <% if $CollapseOnMobile %>data-collapse-on-mobile="1"<% end_if %>
             >
                 <div class="sp-popup__content sp-popup__content--center-center">
