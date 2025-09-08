@@ -5,3 +5,7 @@ SilverStripe\LinkField\Models\Link:
 SilverStripe\CMS\Model\SiteTree:
   extensions:
     - PlasticStudio\SilverstripePopups\Extensions\PageExtension
+
+SilverStripe\CMS\Controllers\ContentController:
+  extensions:
+    - PlasticStudio\SilverstripePopups\Extensions\PageControllerExtension

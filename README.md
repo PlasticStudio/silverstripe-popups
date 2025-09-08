@@ -10,7 +10,7 @@ Add the module to your project using Composer:
 composer require plasticstudio/silverstripe-popups
 ```
 
-Add the template to your `Page.ss` file:
+Add the template to your `Page.ss` file right before the closing `</body>` tag:
 
 ```html
 <% include PopupProvider %>
@@ -23,4 +23,3 @@ Track popup views using element visibility triggers- add custom class via ui
 button interactions using standard click listeners- add custom class via ui
 
 close via css selectors
-

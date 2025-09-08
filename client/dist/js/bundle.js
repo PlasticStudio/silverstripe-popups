@@ -48,7 +48,11 @@ module.exports = jQuery;
 
 
 function showNextPopup() {
-  const popups = $('.sp-popup');
+  const popups = $('.sp-popup').toArray().sort((a, b) => {
+    const sortA = parseInt($(a).data('sort-order') || 0, 10);
+    const sortB = parseInt($(b).data('sort-order') || 0, 10);
+    return sortA - sortB;
+  });
   for (let i = 0; i < popups.length; i++) {
     const popup = $(popups[i]);
     const shown = shouldShowPopup(popup);
@@ -60,7 +64,8 @@ function showNextPopup() {
 function closePopup(popupId) {
   const popup = $(`.sp-popup[data-popup-id='${popupId}']`);
   const now = new Date();
-  const expiryDate = new Date(now.getTime() + 10 * 365 * 24 * 60 * 60 * 1000);
+  const expiryTime = parseInt($('.sp-popups').data('cookie-expiry-time'), 10) || 2628000000;
+  const expiryDate = new Date(now.getTime() + expiryTime);
   const expiryDateString = expiryDate.toUTCString();
   document.cookie = `popup-hidden-${popupId}=true; expires=${expiryDateString}; path=/`;
   document.cookie = `popup-minimized-${popupId}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/`;
@@ -155,7 +160,11 @@ $('.sp-popup__close').on('click', function () {
 $('.sp-popup__backdrop').on('click', function () {
   const popupId = $(this).data('popup-id');
   const popup = $(`.sp-popup[data-popup-id='${popupId}']`);
-  if (popup.find('.sp-popup__minimize').length > 0) {
+  const mode = popup.data('mode');
+  const hasMinimize = popup.find('.sp-popup__minimize').length > 0;
+  if (hasMinimize && (mode === 'strip' || mode === 'edge')) {
+    minimizePopup(popupId, true);
+  } else if (hasMinimize && mode === 'modal') {
     minimizePopup(popupId, true);
   } else {
     closePopup(popupId);
