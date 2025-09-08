@@ -164,7 +164,7 @@
 
   .sp-popup__inner {
     display: grid;
-    grid-template: 150px 1fr;
+    grid-gap: var(--popup-padding);
     background-color: var(--popup-content-background-colour);
     padding: var(--popup-padding);
     margin: var(--popup-margin);
