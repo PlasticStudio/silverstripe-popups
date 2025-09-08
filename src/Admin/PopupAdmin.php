@@ -25,6 +25,7 @@ class PopupAdmin extends ModelAdmin
         if($this->modelClass == 'Popup' && $gridField = $form->Fields()->dataFieldByName($this->sanitiseClassName($this->modelClass))) {
             if($gridField instanceof GridField) {
                 $gridField->getConfig()->addComponent(new GridFieldSortableRows('PopupSortOrder'));
+                $gridField->getConfig()->addComponent(GridFieldCloneAction::create());
             }
         }
 
