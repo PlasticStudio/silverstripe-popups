@@ -1,3 +1,7 @@
+// Hide minimized bar in modal mode
+.sp-popup--mode-modal .sp-popup__minimized {
+  display: none !important;
+}
 :root {
   /* Content */
   --popup-content-background-colour: #ffffff;
@@ -34,6 +38,15 @@
   transition: opacity 0.2s ease-in-out;
   pointer-events: none;
   z-index: 1000;
+}
+
+.sp-popup__image {
+  img {
+    display: block;
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+  }
 }
 
 // Mode: modal (centered modal popup)
@@ -157,9 +170,9 @@
   transform: translate(-50%, -50%);
 }
 
+// Remove minimize button for modal version
 .sp-popup__full {
-  .sp-popup__close,
-  .sp-popup__minimize {
+  .sp-popup__close {
     position: absolute;
     top: 0px;
     right: 0px;
@@ -196,6 +209,43 @@
     border-radius: var(--popup-border-radius);
     position: relative;
   }
+}
+
+// Only show minimize button for non-modal popups
+.sp-popup:not(.sp-popup--mode-modal) .sp-popup__full .sp-popup__minimize {
+  position: absolute;
+  top: 0px;
+  right: 40px;
+  z-index: 5;
+  cursor: pointer;
+  padding: 15px;
+
+  &::before,
+  &::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 2px;
+    height: 15px;
+    background-color: rgb(55, 55, 55);
+  }
+
+  &::before {
+    transform: translate(-50%, -50%) rotate(45deg);
+  }
+
+  &::after {
+    transform: translate(-50%, -50%) rotate(-45deg);
+  }
+}
+
+// Make images fill their container in popup content
+.sp-popup__inner img {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
 }
 
 .sp-popup__minimized:not(.sp-popup--hidden).sp-popup__minimized--right {

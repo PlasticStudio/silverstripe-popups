@@ -1,6 +1,10 @@
 /*!**************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[0].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[0].use[2]!./node_modules/resolve-url-loader/index.js??ruleSet[1].rules[0].use[3]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[0].use[4]!./client/src/scss/index.scss ***!
   \**************************************************************************************************************************************************************************************************************************************************************************************************************************/
+.sp-popup--mode-modal .sp-popup__minimized {
+  display: none !important;
+}
+
 :root {
   /* Content */
   --popup-content-background-colour: #ffffff;
@@ -32,6 +36,14 @@
   transition: opacity 0.2s ease-in-out;
   pointer-events: none;
   z-index: 1000;
+}
+
+.sp-popup__image img {
+  display: block;
+  width: 100%;
+  height: auto;
+  -o-object-fit: contain;
+     object-fit: contain;
 }
 
 .sp-popup--mode-modal {
@@ -149,8 +161,7 @@
   transform: translate(-50%, -50%);
 }
 
-.sp-popup__full .sp-popup__close,
-.sp-popup__full .sp-popup__minimize {
+.sp-popup__full .sp-popup__close {
   position: absolute;
   top: 0px;
   right: 0px;
@@ -158,9 +169,7 @@
   cursor: pointer;
   padding: 15px;
 }
-.sp-popup__full .sp-popup__close::before, .sp-popup__full .sp-popup__close::after,
-.sp-popup__full .sp-popup__minimize::before,
-.sp-popup__full .sp-popup__minimize::after {
+.sp-popup__full .sp-popup__close::before, .sp-popup__full .sp-popup__close::after {
   content: "";
   position: absolute;
   top: 50%;
@@ -169,12 +178,10 @@
   height: 15px;
   background-color: rgb(55, 55, 55);
 }
-.sp-popup__full .sp-popup__close::before,
-.sp-popup__full .sp-popup__minimize::before {
+.sp-popup__full .sp-popup__close::before {
   transform: translate(-50%, -50%) rotate(45deg);
 }
-.sp-popup__full .sp-popup__close::after,
-.sp-popup__full .sp-popup__minimize::after {
+.sp-popup__full .sp-popup__close::after {
   transform: translate(-50%, -50%) rotate(-45deg);
 }
 .sp-popup__full .sp-popup__inner {
@@ -190,6 +197,38 @@
   border-radius: 8px;
   border-radius: var(--popup-border-radius);
   position: relative;
+}
+
+.sp-popup:not(.sp-popup--mode-modal) .sp-popup__full .sp-popup__minimize {
+  position: absolute;
+  top: 0px;
+  right: 40px;
+  z-index: 5;
+  cursor: pointer;
+  padding: 15px;
+}
+.sp-popup:not(.sp-popup--mode-modal) .sp-popup__full .sp-popup__minimize::before, .sp-popup:not(.sp-popup--mode-modal) .sp-popup__full .sp-popup__minimize::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 2px;
+  height: 15px;
+  background-color: rgb(55, 55, 55);
+}
+.sp-popup:not(.sp-popup--mode-modal) .sp-popup__full .sp-popup__minimize::before {
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+.sp-popup:not(.sp-popup--mode-modal) .sp-popup__full .sp-popup__minimize::after {
+  transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+.sp-popup__inner img {
+  display: block;
+  width: 100%;
+  height: auto;
+  -o-object-fit: contain;
+     object-fit: contain;
 }
 
 .sp-popup__minimized:not(.sp-popup--hidden).sp-popup__minimized--right {
