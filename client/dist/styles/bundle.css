@@ -1,18 +1,15 @@
 /*!**************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[0].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[0].use[2]!./node_modules/resolve-url-loader/index.js??ruleSet[1].rules[0].use[3]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[0].use[4]!./client/src/scss/index.scss ***!
   \**************************************************************************************************************************************************************************************************************************************************************************************************************************/
-/*
- Default CSS custom properties for the SilverStripe Popups component.
- Override these in your project (in a higher-specificity selector or global :root) to customize
- the look-and-feel without touching the component styles.
-*/
 :root {
   /* Content */
   --popup-content-background-colour: #ffffff;
   --popup-max-width: 640px;
   /* Spacing */
-  --popup-padding: 16px; /* inner padding for popup content */
-  --popup-margin: 0; /* external margin for popup component */
+  --popup-padding: 16px;
+  /* inner padding for popup content */
+  --popup-margin: 0;
+  /* external margin for popup component */
   /* Shape */
   --popup-border-radius: 8px;
   /* Backdrop */
@@ -24,7 +21,7 @@
 }
 
 /* Local aliasing scoped to the component wrapper so consumers can override at the component level
-   if they prefer (e.g. .sp-popups { --popup-padding: 8px; }) */
+  if they prefer (e.g. .sp-popups { --popup-padding: 8px; }) */
 .sp-popups {
   --popup-content-background-colour: var(--popup-content-background-colour);
   --popup-max-width: var(--popup-max-width);
