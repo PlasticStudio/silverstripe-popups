@@ -20,6 +20,10 @@
   /* external margin for popup component */
   /* Shape */
   --popup-border-radius: 8px;
+  /* Shadows */
+  --popup-modal-shadow: 0 2px 32px rgba(0,0,0,0.16);
+  --popup-strip-shadow: 0 -2px 16px rgba(0,0,0,0.08);
+  --popup-edge-shadow: -2px 0 16px rgba(0,0,0,0.08);
   /* Backdrop */
   --popup-backdrop-color: rgba(0, 0, 0, 0.5);
   /* Controls */
@@ -82,7 +86,8 @@
   max-width: 90vw;
   border-radius: 8px;
   border-radius: var(--popup-border-radius);
-  box-shadow: 0 2px 32px rgba(0, 0, 0, 0.16);
+  box-shadow: 0 2px 32px rgba(0,0,0,0.16);
+  box-shadow: var(--popup-modal-shadow);
 }
 
 .sp-popup--mode-strip {
@@ -110,20 +115,22 @@
   width: 100vw;
   max-width: 100vw;
   border-radius: 0;
-  box-shadow: 0 -2px 16px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 -2px 16px rgba(0,0,0,0.08);
+  box-shadow: var(--popup-strip-shadow);
 }
 
 .sp-popup--mode-edge {
-  top: 0;
+  top: auto;
   right: 0;
-  bottom: 0;
+  bottom: 20%;
   left: auto;
   width: auto;
-  height: 100vh;
+  height: auto;
   min-width: 60px;
+  max-height: 60vh;
   pointer-events: auto;
   display: flex;
-  align-items: flex-end;
+  align-items: flex-start;
   justify-content: flex-end;
   background: none;
 }
@@ -135,10 +142,10 @@
   right: auto;
   bottom: auto;
   transform: none;
-  height: 100vh;
-  max-height: 100vh;
+  height: auto;
+  max-height: 60vh;
   border-radius: 0;
-  box-shadow: -2px 0 16px rgba(0, 0, 0, 0.08);
+  box-shadow: none;
 }
 
 @media (max-width: 600px) {
@@ -209,6 +216,13 @@
   border-radius: 8px;
   border-radius: var(--popup-border-radius);
   position: relative;
+}
+
+.sp-popup--mode-edge .sp-popup__full .sp-popup__inner {
+  box-shadow: -2px 0 16px rgba(0,0,0,0.08);
+  box-shadow: var(--popup-edge-shadow);
+  border-radius: 8px 0 0 8px;
+  border-radius: var(--popup-border-radius) 0 0 var(--popup-border-radius);
 }
 
 .sp-popup:not(.sp-popup--mode-modal) .sp-popup__full .sp-popup__minimize {
