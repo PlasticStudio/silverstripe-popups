@@ -10,16 +10,18 @@
                 <% if $CollapseOnMobile %>data-collapse-on-mobile="1"<% end_if %>
             >
                 <div class="sp-popup__content">
-                    <div class="sp-popup__minimized sp-popup--hidden<% if $ExtraMinimizeClasses %> $ExtraMinimizeClasses<% end_if %>" data-popup-id="$ID">
-                        <button class="sp-popup__close<% if $ExtraCloseClasses %> $ExtraCloseClasses<% end_if %>" data-popup-id="$ID"></button>
-                        <p class="sp-popup__minimized-title" data-popup-id="$ID">
-                            <% if $MinimizedTitle %>
-                                $MinimizedTitle
-                            <% else %>
-                                $Title
-                            <% end_if %>
-                        </p>
-                    </div>
+                    <% if $Mode != 'modal' %>
+                        <div class="sp-popup__minimized sp-popup--hidden<% if $ExtraMinimizeClasses %> $ExtraMinimizeClasses<% end_if %>" data-popup-id="$ID">
+                            <button class="sp-popup__close<% if $ExtraCloseClasses %> $ExtraCloseClasses<% end_if %>" data-popup-id="$ID"></button>
+                            <p class="sp-popup__minimized-title" data-popup-id="$ID">
+                                <% if $MinimizedTitle %>
+                                    $MinimizedTitle
+                                <% else %>
+                                    $Title
+                                <% end_if %>
+                            </p>
+                        </div>
+                    <% end_if %>
 
                     <div class="sp-popup__full" data-popup-id="$ID">
                         <% if $EnableMinimize %>
