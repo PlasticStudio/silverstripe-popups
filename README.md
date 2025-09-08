@@ -55,6 +55,12 @@ Override default styling by defining CSS custom properties in your theme:
   --popup-backdrop-color: rgba(0, 0, 0, 0.5);
   --popup-close-color: #373737;
   --popup-z-index: 1000;
+
+  /* Buttons */
+  --popup-button-text-color: #ffffff;
+  --popup-button-color: #007bff;
+  --popup-button-hover-text-color: #ffffff;
+  --popup-button-hover-color: #0056b3;
 }
 ```
 

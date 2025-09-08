@@ -27,6 +27,10 @@
   --popup-close-color: #373737;
   /* Layering */
   --popup-z-index: 1000;
+  --popup-button-text-color: #ffffff;
+  --popup-button-color: #007bff;
+  --popup-button-hover-text-color: #ffffff;
+  --popup-button-hover-color: #0056b3;
 }
 
 .sp-popup {
@@ -348,6 +352,33 @@
 .sp-popup:not(.sp-popup--minimized-state) .sp-popup-backdrop {
   pointer-events: auto;
   opacity: 1;
+}
+
+.sp-popup__links {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.sp-popup__link {
+  display: inline-block;
+  padding: 8px 16px;
+  color: #ffffff;
+  color: var(--popup-button-text-color);
+  background-color: #007bff;
+  background-color: var(--popup-button-color);
+  text-decoration: none;
+  border-radius: 4px;
+  font-size: 14px;
+  transition: background-color 0.2s ease-in-out;
+}
+.sp-popup__link:hover {
+  color: #ffffff;
+  color: var(--popup-button-hover-text-color);
+  background-color: #0056b3;
+  background-color: var(--popup-button-hover-color);
 }
 
 /*# sourceMappingURL=bundle.css.map*/

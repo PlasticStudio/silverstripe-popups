@@ -51,14 +51,10 @@
                                     </div>
                                 <% end_if %>
 
-                                <% if $Links.exists %>
+                                <% if $Links %>
                                     <div class="sp-popup__links">
                                         <% loop $Links %>
-                                            <% if $LinkURL %>
-                                                <a href="$LinkURL" class="sp-popup__link<% if $ExtraClasses %> $ExtraClasses<% end_if %>"<% if $OpenInNew %> target="_blank" rel="noopener"<% end_if %>>
-                                                    $Title
-                                                </a>
-                                            <% end_if %>
+                                            <a href="$URL" class="sp-popup__link<% if $ExtraClasses %> $ExtraClasses<% end_if %>" <% if $OpenInNew %>target="_blank" rel="noopener noreferrer"<% end_if %>>$Title</a>
                                         <% end_loop %>
                                     </div>
                                 <% end_if %>
