@@ -119,15 +119,27 @@
   box-shadow: var(--popup-strip-shadow);
 }
 
+.sp-popup--mode-strip .sp-popup__inner {
+  grid-template-columns: 150px auto;
+}
+
+.sp-popup--mode-strip .sp-popup__inner-content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+}
+
 .sp-popup--mode-edge {
   top: auto;
   right: 0;
   bottom: 20%;
   left: auto;
-  width: auto;
+  width: 90%;
   height: auto;
   min-width: 60px;
   max-height: 60vh;
+  max-width: 400px;
   pointer-events: auto;
   display: flex;
   align-items: flex-start;
