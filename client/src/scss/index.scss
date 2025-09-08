@@ -6,6 +6,7 @@
 :root {
   /* Content */
   --popup-content-background-colour: #ffffff;
+  --popup-minimised-background-colour: #ffffff;
   --popup-max-width: 640px;
 
   /* Spacing */
@@ -271,8 +272,12 @@
   object-fit: contain;
 }
 
-.sp-popup__minimized:not(.sp-popup--hidden).sp-popup__minimized--right {
-  margin-left: calc(100% - 40px);
+// Specific positioning for edge mode minimized state
+.sp-popup--mode-edge .sp-popup__minimized {
+  position: fixed;
+  right: 0;
+  bottom: 20%;
+  margin: 0;
 }
 
 .sp-popup__minimized {
@@ -288,6 +293,8 @@
   justify-content: flex-start;
   transition: transform 0.75s ease-in-out;
   cursor: pointer;
+  background-color: var(--popup-minimised-background-colour);
+  border-radius: var(--popup-border-radius) 0 0 var(--popup-border-radius);
 
   .sp-popup__close {
     width: 30px;
