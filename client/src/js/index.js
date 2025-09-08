@@ -162,21 +162,29 @@ $('.c-popup__inner').on('click', (e) => {
   e.stopPropagation();
 });
 
-// Handle clicks on the minimize button
-$('.sp-popup__minimize').on('click', function () {
-  const popupId = $(this).data('popup-id');
-  minimizePopup(popupId, true);
-});
-
-$('.sp-popup__minimized').on('click', function () {
-  const popupId = $(this).data('popup-id');
-  showFullPopup(popupId);
-});
-
 // Handle clicks on the close button (in both minimized and full versions)
 $('.sp-popup__close').on('click', function () {
   const popupId = $(this).data('popup-id');
-  closePopup(popupId);
+  
+  // Check if this is a close button that should minimize instead
+  if ($(this).hasClass('sp-popup__close--minimize')) {
+    minimizePopup(popupId, true);
+  } else {
+    closePopup(popupId);
+  }
+});
+
+// Update the minimized click handler to handle clicking anywhere on the minimized bar
+$('.sp-popup__minimized').on('click', function (e) {
+  const popupId = $(this).data('popup-id');
+  
+  // If clicking on the close button within minimized state, close the popup
+  if ($(e.target).hasClass('sp-popup__close')) {
+    closePopup(popupId);
+  } else {
+    // Otherwise, clicking anywhere else on the minimized bar should reopen
+    showFullPopup(popupId);
+  }
 });
 
 // Add click handler for strip/edge popup content areas to minimize when minimize is available
@@ -185,7 +193,7 @@ $(document).on('click', '.sp-popup--mode-strip .sp-popup__content, .sp-popup--mo
   if (e.target === this) {
     const popupId = $(this).closest('.sp-popup').data('popup-id');
     const popup = $(`.sp-popup[data-popup-id='${popupId}']`);
-    const hasMinimize = popup.find('.sp-popup__minimize').length > 0;
+    const hasMinimize = popup.find('.sp-popup__close--minimize').length > 0;
 
     if (hasMinimize) {
       minimizePopup(popupId, true);
@@ -199,7 +207,7 @@ $('.sp-popup__backdrop').on('click', function () {
 
   // For modal popups: check if minimize is available, otherwise close
   const mode = popup.data('mode');
-  const hasMinimize = popup.find('.sp-popup__minimize').length > 0;
+  const hasMinimize = popup.find('.sp-popup__close--minimize').length > 0;
 
   if (hasMinimize && mode === 'modal') {
     minimizePopup(popupId, true); // Modal with minimize available

@@ -28,7 +28,7 @@
                             <button class="sp-popup__close<% if $ExtraCloseClasses %> $ExtraCloseClasses<% end_if %>" data-popup-id="$ID"></button>
                         <% else %>
                             <% if $EnableMinimize %>
-                                <button class="sp-popup__minimize<% if $ExtraMinimizeClasses %> $ExtraMinimizeClasses<% end_if %>" data-popup-id="$ID"></button>
+                                <button class="sp-popup__close sp-popup__close--minimize<% if $ExtraCloseClasses %> $ExtraCloseClasses<% end_if %>" data-popup-id="$ID"></button>
                             <% else %>
                                 <button class="sp-popup__close<% if $ExtraCloseClasses %> $ExtraCloseClasses<% end_if %>" data-popup-id="$ID"></button>
                             <% end_if %>

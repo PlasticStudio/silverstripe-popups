@@ -155,23 +155,27 @@ $('.c-popup').on('click', function () {
 $('.c-popup__inner').on('click', e => {
   e.stopPropagation();
 });
-$('.sp-popup__minimize').on('click', function () {
-  const popupId = $(this).data('popup-id');
-  minimizePopup(popupId, true);
-});
-$('.sp-popup__minimized').on('click', function () {
-  const popupId = $(this).data('popup-id');
-  showFullPopup(popupId);
-});
 $('.sp-popup__close').on('click', function () {
   const popupId = $(this).data('popup-id');
-  closePopup(popupId);
+  if ($(this).hasClass('sp-popup__close--minimize')) {
+    minimizePopup(popupId, true);
+  } else {
+    closePopup(popupId);
+  }
+});
+$('.sp-popup__minimized').on('click', function (e) {
+  const popupId = $(this).data('popup-id');
+  if ($(e.target).hasClass('sp-popup__close')) {
+    closePopup(popupId);
+  } else {
+    showFullPopup(popupId);
+  }
 });
 $(document).on('click', '.sp-popup--mode-strip .sp-popup__content, .sp-popup--mode-edge .sp-popup__content', function (e) {
   if (e.target === this) {
     const popupId = $(this).closest('.sp-popup').data('popup-id');
     const popup = $(`.sp-popup[data-popup-id='${popupId}']`);
-    const hasMinimize = popup.find('.sp-popup__minimize').length > 0;
+    const hasMinimize = popup.find('.sp-popup__close--minimize').length > 0;
     if (hasMinimize) {
       minimizePopup(popupId, true);
     }
@@ -181,7 +185,7 @@ $('.sp-popup__backdrop').on('click', function () {
   const popupId = $(this).data('popup-id');
   const popup = $(`.sp-popup[data-popup-id='${popupId}']`);
   const mode = popup.data('mode');
-  const hasMinimize = popup.find('.sp-popup__minimize').length > 0;
+  const hasMinimize = popup.find('.sp-popup__close--minimize').length > 0;
   if (hasMinimize && mode === 'modal') {
     minimizePopup(popupId, true);
   } else {
