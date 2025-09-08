@@ -20,6 +20,7 @@ use UncleCheese\DisplayLogic\CriteriaSet;
 use SilverStripe\ORM\FieldType\DBDatetime;
 use SilverStripe\AssetAdmin\Forms\UploadField;
 use SilverStripe\LinkField\Form\MultiLinkField;
+use SilverStripe\Core\Config\Config;
 
 class Popup extends DataObject
 {
@@ -139,7 +140,8 @@ class Popup extends DataObject
             if (in_array($shortName, $exclusions) || in_array($pageType, $exclusions)) {
                 continue;
             }
-           $filteredPageTypes[] = $pageType;
+            // Use class name as both key and value for proper storage/retrieval
+            $filteredPageTypes[$pageType] = $shortName;
         }
 
         $pageTypesField = ListboxField::create(
@@ -178,7 +180,7 @@ class Popup extends DataObject
                     ->group()
                         ->orIf('Mode')->isEqualTo('strip')
                         ->orIf('Mode')->isEqualTo('edge')
-                    ->end(),,
+                    ->end(),
 
             CheckboxField::create(
                 'CollapseOnMobile',
@@ -252,12 +254,17 @@ class Popup extends DataObject
         if ($this->AllPages) {
             return true;
         }
-        $selectedTypes = $this->PageTypes ? explode(',', $this->PageTypes) : [];
-        if (in_array(get_class($page), $selectedTypes)) {
-            return true;
-        }
-        if ($this->Pages()->exists() && $this->Pages()->find('ID', $page->ID)) {
-            return true;
+        
+        // Check by LinkBy setting
+        if ($this->LinkBy === 'pageType') {
+            $selectedTypes = $this->PageTypes ? explode(',', $this->PageTypes) : [];
+            if (in_array(get_class($page), $selectedTypes)) {
+                return true;
+            }
+        } elseif ($this->LinkBy === 'page') {
+            if ($this->Pages()->exists() && $this->Pages()->find('ID', $page->ID)) {
+                return true;
+            }
         }
 
         return false;
@@ -271,5 +278,15 @@ class Popup extends DataObject
     public function getPagesList()
     {
         return implode(', ', $this->Pages()->column('Title'));
+    }
+
+    /**
+     * Get the cookie expiry time in milliseconds from config
+     *
+     * @return int Cookie expiry time in milliseconds
+     */
+    public function getCookieExpiryTime()
+    {
+        return (int) Config::inst()->get(self::class, 'cookie_expiry_time') ?: 2628000000; // Default to 1 month
     }
 }
